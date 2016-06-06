@@ -3,9 +3,10 @@
   <input type="text" name="number" required="true"> <br>
   Text:
   <input type="text" name="words" required="true"> <br>
-  <input type="submit" name="action" value="call">
 
-  <input type="submit" name="action" value="text">
+  <input type="radio" name="action" value="call"> Call
+  <input type="radio" name="action" value="text"> Text
+  <input type="submit" name="Send">
 </form>
 
 <br><br>

@@ -39,8 +39,10 @@ public class Main {
         
 
         post("/phone", (request, response) -> {
+          
           String number = "+1" + request.queryParams("number");
           String text = request.queryParams("words");
+          
           if("call" == request.queryParams("action")){
             outboundCall(number,"+18328627643",text);
           } else if ("text" == request.queryParams("action")){
