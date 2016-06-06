@@ -1,3 +1,9 @@
+import com.bandwidth.sdk.*;
+import com.bandwidth.sdk.model.Call;
+import com.bandwidth.sdk.model.Message;
+import com.bandwidth.sdk.xml.Response;
+import com.bandwidth.sdk.xml.elements.*;
+
 import java.sql.*;
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -18,43 +24,115 @@ public class Main {
   public static void main(String[] args) {
 
     port(Integer.valueOf(System.getenv("PORT")));
-    staticFileLocation("/public");
+    s
+        authenticate();
+        
+        staticFileLocation("/public");
+        String layout = "templates/layout.vtl";
 
-    get("/hello", (req, res) -> "Hello World");
+        get("/", (req, res) -> {
+          HashMap model =new HashMap();
+          model.put("template", "templates/phone.vtl");
+          return new ModelAndView(model, layout);
+        }, new VelocityTemplateEngine());
+        
+  //    Document xmlDoc = getDocument("./src/main/callForwarding.xml");
+        
 
-    get("/", (request, response) -> {
-            Map<String, Object> attributes = new HashMap<>();
-            attributes.put("message", "Hello World!");
+        post("/phone", (request, response) -> {
+          String number = "+1" + request.queryParams("number");
+          String text = request.queryParams("words");
+          if("call" == request.queryParams("action")){
+            outboundCall(number,"+18328627643",text);
+          } else {
+            sendText(number,"+18328627643",text);
+          }
+          return null;
+        });
 
-            return new ModelAndView(attributes, "index.ftl");
-        }, new FreeMarkerEngine());
+  }
 
-    get("/db", (req, res) -> {
-      Connection connection = null;
-      Map<String, Object> attributes = new HashMap<>();
-      try {
-        connection = DatabaseUrl.extract().getConnection();
+  public static void authenticate(){
+    String userId = "u-72jjash6ldbrtsjvmrsfetq";          //my userId
+        String apiToken = "t-depqhu2y25ut7gsdkussxbq";          //my token
+        String apiSecret = "ajk2odf574li7qvbkz7qtg3fr36wsfnttcpso6y"; //my secret
 
-        Statement stmt = connection.createStatement();
-        stmt.executeUpdate("CREATE TABLE IF NOT EXISTS ticks (tick timestamp)");
-        stmt.executeUpdate("INSERT INTO ticks VALUES (now())");
-        ResultSet rs = stmt.executeQuery("SELECT tick FROM ticks");
-
-        ArrayList<String> output = new ArrayList<String>();
-        while (rs.next()) {
-          output.add( "Read from DB: " + rs.getTimestamp("tick"));
+        try {
+            BandwidthClient.getInstance().setCredentials(userId, apiToken, apiSecret);
+            // use other resource classes here.
         }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+  }
+  
+  public static void sendText(String toNumber, String fromNumber, String text){
+    try {
+             Message message = Message.create(toNumber, fromNumber, text);  
+             System.out.println("message:" + message);
+    }
+    catch(Exception e) {
+      e.printStackTrace();
+    }
 
-        attributes.put("results", output);
-        return new ModelAndView(attributes, "db.ftl");
-      } catch (Exception e) {
-        attributes.put("message", "There was an error: " + e);
-        return new ModelAndView(attributes, "error.ftl");
-      } finally {
-        if (connection != null) try{connection.close();} catch(SQLException e){}
-      }
-    }, new FreeMarkerEngine());
+    // get("/message", (req, res) -> {
+    //  String bxml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + 
+    //    "<Response>\n" +
+    //      "<SendMessage from=\"" + fromNumber + "\" to=\"" + toNumber + "\">\n" +
+    //        text + "\n" +
+    //      "</SendMessage>\n" +
+    //    "</Response>";
+    //  send(bxml);
+    // });
+  }
+  
+  public static void outboundCall(String toNumber, String fromNumber, String text){
+    try {
+      Call call = Call.create(toNumber, fromNumber);
+      System.out.println("Updated call:" + call); 
+      call.hangUp();
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
 
+    // get("/call", (req, res) -> {
+    //  String bxml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + 
+    //    "<Response>\n" +
+    //      "<Call from=\"" + fromNumber + "\" to=\"" + toNumber + "\">\n" +
+    //      "<SpeakSentence>" + text + "</SpeakSentence>\n" +
+    //      "</Call>\n" +
+    //    "</Response>";
+    //  post(bxml);
+    // });
+  }
+
+  private static int getHerokuAssignedPort() {
+    ProcessBuilder processBuilder = new ProcessBuilder();
+    if (processBuilder.environment().get("PORT") != null) {
+      return Integer.parseInt(processBuilder.environment().get("PORT"));
+    }
+    return 4567;
+  }
+
+  private static Document getDocument(String docString) {
+    
+    try {
+      DocumentBuilderFactory factory =DocumentBuilderFactory.newInstance();
+      
+      factory.setIgnoringComments(true);
+      factory.setIgnoringElementContentWhitespace(true);
+      factory.setValidating(true);
+      
+      DocumentBuilder builder = factory.newDocumentBuilder();
+      
+      return builder.parse(new InputSource(docString));
+    }
+    
+    catch(Exception ex){
+      System.out.println(ex.getMessage());
+    }
+    
+    return null;
   }
 
 }
