@@ -18,13 +18,12 @@ import spark.template.velocity.VelocityTemplateEngine;
 
 import static spark.Spark.*;
 
-import com.heroku.sdk.jdbc.DatabaseUrl;
-
 public class Main {
 
   public static void main(String[] args) {
 
-    port(Integer.valueOf(System.getenv("PORT")));
+    port(getHerokuAssignedPort());
+
         authenticate();
         
         staticFileLocation("/public");
