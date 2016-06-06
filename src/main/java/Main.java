@@ -27,11 +27,11 @@ public class Main {
         authenticate();
         
         staticFileLocation("/public");
-        String layout = "templates/layout.vtl";
+        String layout = "templates/layout.ftl";
 
         get("/", (req, res) -> {
           HashMap model =new HashMap();
-          model.put("template", "templates/phone.vtl");
+          model.put("template", "templates/phone.ftl");
           return new ModelAndView(model, layout);
         }, new VelocityTemplateEngine());
         
