@@ -4,18 +4,19 @@ import com.bandwidth.sdk.model.Message;
 import com.bandwidth.sdk.xml.Response;
 import com.bandwidth.sdk.xml.elements.*;
 
-import java.sql.*;
-import java.util.HashMap;
-import java.util.ArrayList;
-import java.util.Map;
+import javax.servlet.http.HttpServlet;
 
-import java.net.URI;
-import java.net.URISyntaxException;
+import org.xml.sax.*;
+import org.w3c.dom.*;
+
+import javax.xml.parsers.*;
+
+import java.util.HashMap;
+
+import spark.ModelAndView;
+import spark.template.velocity.VelocityTemplateEngine;
 
 import static spark.Spark.*;
-import spark.template.freemarker.FreeMarkerEngine;
-import spark.ModelAndView;
-import static spark.Spark.get;
 
 import com.heroku.sdk.jdbc.DatabaseUrl;
 
@@ -24,7 +25,6 @@ public class Main {
   public static void main(String[] args) {
 
     port(Integer.valueOf(System.getenv("PORT")));
-    s
         authenticate();
         
         staticFileLocation("/public");
