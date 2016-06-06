@@ -9,6 +9,6 @@
   <input type="submit" name="Send">
 </form>
 
-<br><br>
+<br>
 
 <p>All calls to +19196705750 will be forwarded to +18328627643</p>

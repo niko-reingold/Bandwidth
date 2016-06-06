@@ -89,12 +89,12 @@ public class Main {
   
   public static void outboundCall(String toNumber, String fromNumber, String text){
     try {
-      Response response = new Response();
-      SpeakSentence speakSentence = new SpeakSentence(text, "paul", "male", "en");
+      // Response response = new Response();
+      // SpeakSentence speakSentence = new SpeakSentence(text, "paul", "male", "en");
 
       Call call = Call.create(toNumber, fromNumber);
       
-      Response.add(speakSentence);
+      //Response.add(speakSentence);
 
       call.hangUp();
     } catch (Exception e) {
