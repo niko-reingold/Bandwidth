@@ -40,14 +40,13 @@ public class Main {
 		//	StringWriter writer = new StringWriter();
 		//	mustache.execute(writer, new Main()).flush();
 
-			String callForword = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+			return String callForword = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
 					"<Response>\n" + 
 					"<Transfer transferCallerId=\"+18328627643\">\n" +
 					"<PhoneNumber>+119196705750</PhoneNumber>\n" +
 					"</Transfer>\n" +
 					"</Response>";
 			
-			return callForward;
 		//	return writer.toString();
 		});
 
