@@ -28,7 +28,7 @@ public class Main {
         String layout = "templates/layout.ftl";
 
         get("/", (req, res) -> {
-          HashMap model =new HashMap();
+          HashMap model = new HashMap();
           model.put("template", "templates/phone.ftl");
           return new ModelAndView(model, layout);
         }, new VelocityTemplateEngine());
@@ -48,12 +48,14 @@ public class Main {
           } else if ("text" == request.queryParams("action")){
             sendText(toNumber,"+18328627643",text);
           }
-          return get("/phone", (req, res) -> {
-          HashMap model =new HashMap();
+          return null;
+        });
+
+        get("/phone", (req, res) -> {
+          HashMap model = new HashMap();
           model.put("template", "templates/phone.ftl");
           return new ModelAndView(model, layout);
         }, new VelocityTemplateEngine());
-        });
        
 
   }
