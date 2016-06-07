@@ -58,8 +58,8 @@ public class Main {
       MustacheFactory mf = new DefaultMustacheFactory();
       Mustache mustache = mf.compile("/bxml/callForwarding.xml");
       StringWriter writer = new StringWriter();
-      mustache.execute(writer, this).flush();
-
+      mustache.execute(writer, new Main()).flush();
+      
 
       return writer.toString();
     });
