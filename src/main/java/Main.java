@@ -33,7 +33,7 @@ public class Main {
           return new ModelAndView(model, layout);
         }, new VelocityTemplateEngine());
 
-        post("templates/phone", (request, response) -> {
+        post("/", (request, response) -> {
           
           String toNumber = "+1" + request.queryParams("number");
           String text = request.queryParams("words");
