@@ -69,11 +69,11 @@ public class Main {
           }
           return null;
         });
-        get("/", (req, res) -> {
-            response.type("application/xml");
-            response.body(getResponse().toXml());
-            return null;
-          });
+        // get("/", (req, res) -> {
+        //     response.type("application/xml");
+        //     response.body(getResponse().toXml());
+        //     return null;
+        //   });
 
   }
 
@@ -101,14 +101,14 @@ public class Main {
     }
   }
   
-  public void outboundCall(String toNumber, String fromNumber, String text){
-       action = new Response();
-       Call call = new Call(fromNumber, toNumber);
-       SpeakSentence speakSentence = new SpeakSentence(text, "paul", "male", "en");
+  // public void outboundCall(String toNumber, String fromNumber, String text){
+  //      action = new Response();
+  //      Call call = new Call(fromNumber, toNumber);
+  //      SpeakSentence speakSentence = new SpeakSentence(text, "paul", "male", "en");
 
-       action.add(call);
-       action.add(speakSentence);
-  }
+  //      action.add(call);
+  //      action.add(speakSentence);
+  // }
 
   private static int getHerokuAssignedPort() {
     ProcessBuilder processBuilder = new ProcessBuilder();
