@@ -46,7 +46,7 @@ public class Main {
 
             //outboundCall(number,"+18328627643",text);
           } else if ("text" == request.params("action")){
-            sendText(number,"+18328627643",text);
+            sendText(toNumber,"+18328627643",text);
           }
           return null;
         });
