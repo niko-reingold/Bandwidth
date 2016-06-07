@@ -40,10 +40,14 @@ public class Main {
 		//	StringWriter writer = new StringWriter();
 		//	mustache.execute(writer, new Main()).flush();
 
-			HashMap model = new HashMap();
-			model.put("template", "templates/phone.ftl");
-			return new ModelAndView(model, layout);
+			String callForword = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+					"<Response>\n" + 
+					"<Transfer transferCallerId=\"+18328627643\">\n" +
+					"<PhoneNumber>+119196705750</PhoneNumber>\n" +
+					"</Transfer>\n" +
+					"</Response>";
 			
+			return callForward;
 		//	return writer.toString();
 		});
 
