@@ -31,7 +31,8 @@ import static spark.Spark.*;
 
 public class Main extends HttpServlet {
 
-  Response response;
+  public static final Logger logger = Logger.getLogger(Main.class.getName());
+  private Response response;
 
   public static void main(String[] args) {
 
@@ -110,14 +111,16 @@ public class Main extends HttpServlet {
   protected void doGet(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
 
+        logger.info("get request /main");
+
     try {
       resp.setContentType("application/xml");
       resp.getWriter().print(response.toXml());
-    }// catch (XMLInvalidAttributeException | XMLInvalidTagContentException e) {
-    //     logger.log(Level.SEVERE, "invalid attribute or value", e);
-    // } catch (XMLMarshallingException e) {
-    //     logger.log(Level.SEVERE, "invalid xml", e);
-    // }
+    } catch (XMLInvalidAttributeException | XMLInvalidTagContentException e) {
+         logger.log(Level.SEVERE, "invalid attribute or value", e);
+    } catch (XMLMarshallingException e) {
+         logger.log(Level.SEVERE, "invalid xml", e);
     }
+  }
 
 }
