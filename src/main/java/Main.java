@@ -40,8 +40,10 @@ public class Main {
 
           MustacheFactory mf = new DefaultMustacheFactory();
           Mustache mustache = mf.compile("template.mustache");
-          //mustache.execute().flush();
+          mustache.execute(new PrintWriter(System.out), new Main()).flush();
           
+          response.type("/bxml/call.xml");
+
           if("call" == request.queryParams("action")){
             response.type("/bxml/call.xml");
             //outboundCall(number,"+18328627643",text);
