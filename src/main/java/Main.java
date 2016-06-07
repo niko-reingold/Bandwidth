@@ -40,12 +40,12 @@ public class Main {
 
           MustacheFactory mf = new DefaultMustacheFactory();
           Mustache mustache = mf.compile("template.mustache");
-          mustache.execute().flush();
+          //mustache.execute().flush();
           
-          if("call" == request.queryParamsValues("action")){
+          if("call" == request.queryParams("action")){
             response.type("/bxml/call.xml");
             //outboundCall(number,"+18328627643",text);
-          } else if ("text" == request.queryParamsValues("action")){
+          } else if ("text" == request.queryParams("action")){
             sendText(toNumber,"+18328627643",text);
           }
           return null;
