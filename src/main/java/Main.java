@@ -35,12 +35,16 @@ public class Main {
 		}, new VelocityTemplateEngine());
 
 		get("/transfer", (req, res) -> {
-			MustacheFactory mf = new DefaultMustacheFactory();
-			Mustache mustache = mf.compile("callForwarding.xml");
-			Writer writer = new Writer();
-			mustache.execute(writer, new Main()).flush();
+		//	MustacheFactory mf = new DefaultMustacheFactory();
+		//	Mustache mustache = mf.compile("/bxml/callForwarding.xml");
+		//	StringWriter writer = new StringWriter();
+		//	mustache.execute(writer, new Main()).flush();
 
-			return writer.toString();
+			HashMap model = new HashMap();
+			model.put("template", "templates/phone.ftl");
+			return new ModelAndView(model, layout);
+			
+		//	return writer.toString();
 		});
 
 		get("/phone", (req, res) -> {
