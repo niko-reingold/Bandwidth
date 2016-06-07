@@ -22,43 +22,53 @@ public class Main {
 
     port(getHerokuAssignedPort());
 
-        authenticate();
-        
-        staticFileLocation("/public");
-        String layout = "templates/layout.ftl";
+    authenticate();
+    
+    staticFileLocation("/public");
+    String layout = "templates/layout.ftl";
 
-        get("/", (req, res) -> {
-          HashMap model = new HashMap();
-          model.put("template", "templates/phone.ftl");
-          return new ModelAndView(model, layout);
-        }, new VelocityTemplateEngine());
+    get("/", (req, res) -> {
+      HashMap model = new HashMap();
+      model.put("template", "templates/phone.ftl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
 
-        post("/", (request, response) -> {
-          
-          String toNumber = "+1" + request.queryParams("number");
-          String text = request.queryParams("words");
+    post("/phone", (request, response) -> {
+      
+      String toNumber = "+1" + request.queryParams("number");
+      String text = request.queryParams("words");
 
-          MustacheFactory mf = new DefaultMustacheFactory();
-          Mustache mustache = mf.compile("template.mustache");
-          mustache.execute(new PrintWriter(System.out), new Main()).flush();
-          
-          response.type("/bxml/call.xml");
+      MustacheFactory mf = new DefaultMustacheFactory();
+      Mustache mustache = mf.compile("template.mustache");
+      mustache.execute(new PrintWriter(System.out), new Main()).flush();
+      
+      response.type("/bxml/call.xml");
 
-          if("call" == request.queryParams("action")){
-            response.type("/bxml/call.xml");
-            //outboundCall(number,"+18328627643",text);
-          } else if ("text" == request.queryParams("action")){
-            sendText(toNumber,"+18328627643",text);
-          }
-          return null;
-        });
+      if("call" == request.queryParams("action")){
+        response.type("/bxml/call.xml");
+        //outboundCall(number,"+18328627643",text);
+      } else if ("text" == request.queryParams("action")){
+        sendText(toNumber,"+18328627643",text);
+      }
+      return null;
+    });
 
-        get("/phone", (req, res) -> {
-          HashMap model = new HashMap();
-          model.put("template", "templates/phone.ftl");
-          return new ModelAndView(model, layout);
-        }, new VelocityTemplateEngine());
-       
+    get("/transfer", (req, res) -> {
+      MustacheFactory mf = new DefaultMustacheFactory();
+      Mustache mustache = mf.compile("/bxml/callForwarding.xml");
+      StringWriter writer = new StringWriter();
+      mustache.execute(writer, this).flush();
+
+
+      return writer.toString();
+    });
+
+    get("/phone", (req, res) -> {
+      HashMap model = new HashMap();
+      model.put("template", "templates/phone.ftl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+   
 
   }
 
