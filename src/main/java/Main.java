@@ -63,7 +63,7 @@ public class Main {
           String text = request.queryParams("words");
           
           if("call" == request.attribute("action")){
-            outboundCall(number,"+18328627643",text);
+            //outboundCall(number,"+18328627643",text);
           } else if ("text" == request.attribute("action")){
             sendText(number,"+18328627643",text);
           }
