@@ -33,28 +33,22 @@ public class Main {
           return new ModelAndView(model, layout);
         }, new VelocityTemplateEngine());
 
-        post("/phone", (request, response) -> {
+        post("templates/phone", (request, response) -> {
           
           String toNumber = "+1" + request.queryParams("number");
           String text = request.queryParams("words");
 
-          // MustacheFactory mf = new DefaultMustacheFactory();
-          // Mustache mustache = mf.compile("template.mustache");
-          // mustache.execute(new PrintWriter(System.out), new Main()).flush();
+          MustacheFactory mf = new DefaultMustacheFactory();
+          Mustache mustache = mf.compile("template.mustache");
+          mustache.execute(new PrintWriter(System.out), new Main()).flush();
           
-          if("call" == request.params("action")){
-
+          if("call" == request.queryParams("action")){
+            response.type("/bxml/call.xml");
             //outboundCall(number,"+18328627643",text);
-          } else if ("text" == request.params("action")){
+          } else if ("text" == request.queryParams("action")){
             sendText(toNumber,"+18328627643",text);
           }
-          
-          get("/", (req, res) -> {
-          HashMap model =new HashMap();
-          model.put("template", "templates/phone.ftl");
-          return new ModelAndView(model, layout);
-        }, new VelocityTemplateEngine());
-          return null;
+          return ;
         });
        
 
