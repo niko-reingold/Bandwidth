@@ -3,6 +3,9 @@ import com.bandwidth.sdk.model.Call;
 import com.bandwidth.sdk.model.Message;
 import com.bandwidth.sdk.xml.Response;
 import com.bandwidth.sdk.xml.elements.*;
+import com.bandwidth.sdk.exception.XMLInvalidAttributeException;
+import com.bandwidth.sdk.exception.XMLInvalidTagContentException;
+import com.bandwidth.sdk.exception.XMLMarshallingException;
 
 import javax.servlet.http.HttpServlet;
 
@@ -10,6 +13,8 @@ import org.xml.sax.*;
 import org.w3c.dom.*;
 
 import javax.xml.parsers.*;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import java.util.HashMap;
 
@@ -89,17 +94,26 @@ public class Main {
   
   public static void outboundCall(String toNumber, String fromNumber, String text){
     try {
-      // Response response = new Response();
-      // SpeakSentence speakSentence = new SpeakSentence(text, "paul", "male", "en");
+       Response response = new Response();
+       Call call = new Call(fromNumber, toNumber);
+       SpeakSentence speakSentence = new SpeakSentence(text, "paul", "male", "en");
 
-      Call call = Call.create(toNumber, fromNumber);
-      
-      //Response.add(speakSentence);
+    //   Call call = Call.create(toNumber, fromNumber);
+       response.add(call);
+       response.add(speakSentence);
 
-      call.hangUp();
-    } catch (Exception e) {
-      e.printStackTrace();
+       resp.setContentType("application/xml");
+       resp.getWriter().print(response.toXml());
+    } catch (XMLInvalidAttributeException | XMLInvalidTagContentException e) {
+        logger.log(Level.SEVERE, "invalid attribute or value", e);
+    } catch (XMLMarshallingException e) {
+        logger.log(Level.SEVERE, "invalid xml", e);
     }
+
+    //   call.hangUp();
+    // } catch (Exception e) {
+    //   e.printStackTrace();
+    // }
 
     // get("/call", (req, res) -> {
     //  String bxml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + 
