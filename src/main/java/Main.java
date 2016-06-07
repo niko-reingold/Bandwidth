@@ -24,7 +24,7 @@ public class Main {
     port(getHerokuAssignedPort());
 
     authenticate();
-    
+
     staticFileLocation("/public");
     String layout = "templates/layout.ftl";
 
@@ -34,32 +34,31 @@ public class Main {
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
-    post("/phone", (request, response) -> {
-      
-      String toNumber = "+1" + request.queryParams("number");
-      String text = request.queryParams("words");
-
-      MustacheFactory mf = new DefaultMustacheFactory();
-      Mustache mustache = mf.compile("template.mustache");
-      mustache.execute(new PrintWriter(System.out), new Main()).flush();
-      
-      response.type("/bxml/call.xml");
-
-      if("call" == request.queryParams("action")){
-        response.type("/bxml/call.xml");
-        //outboundCall(number,"+18328627643",text);
-      } else if ("text" == request.queryParams("action")){
-        sendText(toNumber,"+18328627643",text);
-      }
-      return null;
-    });
-
+//    post("/phone", (request, response) -> {
+//      
+//      String toNumber = "+1" + request.queryParams("number");
+//      String text = request.queryParams("words");
+//
+//      MustacheFactory mf = new DefaultMustacheFactory();
+//      Mustache mustache = mf.compile("template.mustache");
+//      mustache.execute(new PrintWriter(System.out), new Main()).flush();
+//      
+//      response.type("/bxml/call.xml");
+//
+//      if("call" == request.queryParams("action")){
+//        response.type("/bxml/call.xml");
+//        //outboundCall(number,"+18328627643",text);
+//      } else if ("text" == request.queryParams("action")){
+//        sendText(toNumber,"+18328627643",text);
+//      }
+//      return null;
+//    }); 
+    
     get("/transfer", (req, res) -> {
       MustacheFactory mf = new DefaultMustacheFactory();
       Mustache mustache = mf.compile("/bxml/callForwarding.xml");
       StringWriter writer = new StringWriter();
-      mustache.execute(writer, new Main()).flush();
-      
+      mustache.execute(writer, this).flush();
 
       return writer.toString();
     });
@@ -96,15 +95,6 @@ public class Main {
       e.printStackTrace();
     }
   }
-  
-  // public void outboundCall(String toNumber, String fromNumber, String text){
-  //      action = new Response();
-  //      Call call = new Call(fromNumber, toNumber);
-  //      SpeakSentence speakSentence = new SpeakSentence(text, "paul", "male", "en");
-
-  //      action.add(call);
-  //      action.add(speakSentence);
-  // }
 
   private static int getHerokuAssignedPort() {
     ProcessBuilder processBuilder = new ProcessBuilder();
