@@ -1,11 +1,11 @@
 <form method="POST" action='/phone'>
-  Number: +1
+  <p>Number: +1</p>
   <input type="text" name="number" required="true"> <br>
-  Text:     
+  <p>Text:     </p>
   <input type="text" name="words" required="true"> <br>
 
-  <input type="radio" name="action" value="call" checked="checked"> Call   
-  <input type="radio" name="action" value="text"> Text   
+  <input type="radio" name="action" value="call" checked="checked"> <p>Call   </p>
+  <input type="radio" name="action" value="text"> <p>Text   </p>
   <input type="submit" name="Send">
 </form>
 
