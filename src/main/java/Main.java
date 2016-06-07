@@ -18,9 +18,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.xml.sax.*;
-import org.w3c.dom.*;
-
 import javax.xml.parsers.*;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -33,6 +30,8 @@ import spark.template.velocity.VelocityTemplateEngine;
 import static spark.Spark.*;
 
 public class Main extends HttpServlet {
+
+  Response response;
 
   public static void main(String[] args) {
 
@@ -48,21 +47,19 @@ public class Main extends HttpServlet {
           model.put("template", "templates/phone.ftl");
           return new ModelAndView(model, layout);
         }, new VelocityTemplateEngine());
-        
-  //    Document xmlDoc = getDocument("./src/main/callForwarding.xml");
-        
 
         post("/phone", (request, response) -> {
           
           String number = "+1" + request.queryParams("number");
           String text = request.queryParams("words");
           
-          if("call" == request.queryParams("action")){
+          if("call" == request.attribute("action")){
             outboundCall(number,"+18328627643",text);
-          } else if ("text" == request.queryParams("action")){
+          } else if ("text" == request.attribute("action")){
             sendText(number,"+18328627643",text);
           }
-          return null;
+
+          this.doGet(req, resp);
         });
 
   }
@@ -89,55 +86,17 @@ public class Main extends HttpServlet {
     catch(Exception e) {
       e.printStackTrace();
     }
-
-    // get("/message", (req, res) -> {
-    //  String bxml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + 
-    //    "<Response>\n" +
-    //      "<SendMessage from=\"" + fromNumber + "\" to=\"" + toNumber + "\">\n" +
-    //        text + "\n" +
-    //      "</SendMessage>\n" +
-    //    "</Response>";
-    //  send(bxml);
-    // });
   }
   
-  public static void outboundCall(String toNumber, String fromNumber, String text){
-
-
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-      throws ServletException, IOException {
-
-    try {
-       Response response = new Response();
+  public Response outboundCall(String toNumber, String fromNumber, String text){
+       response = new Response();
        Call call = new Call(fromNumber, toNumber);
        SpeakSentence speakSentence = new SpeakSentence(text, "paul", "male", "en");
 
-    //   Call call = Call.create(toNumber, fromNumber);
        response.add(call);
        response.add(speakSentence);
 
-       resp.setContentType("application/xml");
-       resp.getWriter().print(response.toXml());
-     }// catch (XMLInvalidAttributeException | XMLInvalidTagContentException e) {
-    //     logger.log(Level.SEVERE, "invalid attribute or value", e);
-    // } catch (XMLMarshallingException e) {
-    //     logger.log(Level.SEVERE, "invalid xml", e);
-    // }
-     }
-    //   call.hangUp();
-    // } catch (Exception e) {
-    //   e.printStackTrace();
-    // }
-
-    // get("/call", (req, res) -> {
-    //  String bxml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + 
-    //    "<Response>\n" +
-    //      "<Call from=\"" + fromNumber + "\" to=\"" + toNumber + "\">\n" +
-    //      "<SpeakSentence>" + text + "</SpeakSentence>\n" +
-    //      "</Call>\n" +
-    //    "</Response>";
-    //  post(bxml);
-    // });
+       return response;
   }
 
   private static int getHerokuAssignedPort() {
@@ -148,25 +107,17 @@ public class Main extends HttpServlet {
     return 4567;
   }
 
-  private static Document getDocument(String docString) {
-    
+  protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+      throws ServletException, IOException {
+
     try {
-      DocumentBuilderFactory factory =DocumentBuilderFactory.newInstance();
-      
-      factory.setIgnoringComments(true);
-      factory.setIgnoringElementContentWhitespace(true);
-      factory.setValidating(true);
-      
-      DocumentBuilder builder = factory.newDocumentBuilder();
-      
-      return builder.parse(new InputSource(docString));
+      resp.setContentType("application/xml");
+      resp.getWriter().print(response.toXml());
+    }// catch (XMLInvalidAttributeException | XMLInvalidTagContentException e) {
+    //     logger.log(Level.SEVERE, "invalid attribute or value", e);
+    // } catch (XMLMarshallingException e) {
+    //     logger.log(Level.SEVERE, "invalid xml", e);
+    // }
     }
-    
-    catch(Exception ex){
-      System.out.println(ex.getMessage());
-    }
-    
-    return null;
-  }
 
 }
