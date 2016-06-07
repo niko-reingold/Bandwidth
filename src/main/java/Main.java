@@ -50,7 +50,11 @@ public class Main {
           } else if ("text" == request.queryParams("action")){
             sendText(toNumber,"+18328627643",text);
           }
-          return null;
+          return get("/", (req, res) -> {
+          HashMap model =new HashMap();
+          model.put("template", "templates/phone.ftl");
+          return new ModelAndView(model, layout);
+        }, new VelocityTemplateEngine());
         });
        
 
