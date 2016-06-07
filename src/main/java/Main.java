@@ -32,7 +32,7 @@ import spark.template.velocity.VelocityTemplateEngine;
 
 import static spark.Spark.*;
 
-public class Main {
+public class Main extends HttpServlet {
 
   public static void main(String[] args) {
 
@@ -102,6 +102,11 @@ public class Main {
   }
   
   public static void outboundCall(String toNumber, String fromNumber, String text){
+
+
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+      throws ServletException, IOException {
+
     try {
        Response response = new Response();
        Call call = new Call(fromNumber, toNumber);
@@ -113,12 +118,12 @@ public class Main {
 
        resp.setContentType("application/xml");
        resp.getWriter().print(response.toXml());
-    } catch (XMLInvalidAttributeException | XMLInvalidTagContentException e) {
-        logger.log(Level.SEVERE, "invalid attribute or value", e);
-    } catch (XMLMarshallingException e) {
-        logger.log(Level.SEVERE, "invalid xml", e);
-    }
-
+     }// catch (XMLInvalidAttributeException | XMLInvalidTagContentException e) {
+    //     logger.log(Level.SEVERE, "invalid attribute or value", e);
+    // } catch (XMLMarshallingException e) {
+    //     logger.log(Level.SEVERE, "invalid xml", e);
+    // }
+     }
     //   call.hangUp();
     // } catch (Exception e) {
     //   e.printStackTrace();
