@@ -101,7 +101,7 @@ public class Main {
     }
   }
   
-  public static void outboundCall(String toNumber, String fromNumber, String text){
+  public void outboundCall(String toNumber, String fromNumber, String text){
        action = new Response();
        Call call = new Call(fromNumber, toNumber);
        SpeakSentence speakSentence = new SpeakSentence(text, "paul", "male", "en");
