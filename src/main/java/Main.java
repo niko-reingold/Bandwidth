@@ -48,6 +48,12 @@ public class Main {
           } else if ("text" == request.params("action")){
             sendText(toNumber,"+18328627643",text);
           }
+          
+          get("/", (req, res) -> {
+          HashMap model =new HashMap();
+          model.put("template", "templates/phone.ftl");
+          return new ModelAndView(model, layout);
+        }, new VelocityTemplateEngine());
           return null;
         });
        
