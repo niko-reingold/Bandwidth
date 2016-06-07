@@ -41,8 +41,6 @@ public class Main {
           MustacheFactory mf = new DefaultMustacheFactory();
           Mustache mustache = mf.compile("template.mustache");
           mustache.execute(new PrintWriter(System.out), new Main()).flush();
-
-          System.out.println(request.params("action"));
           
           if("call" == request.queryParams("action")){
             response.type("/bxml/call.xml");
@@ -50,7 +48,7 @@ public class Main {
           } else if ("text" == request.queryParams("action")){
             sendText(toNumber,"+18328627643",text);
           }
-          return get("/", (req, res) -> {
+          return get("/phone", (req, res) -> {
           HashMap model =new HashMap();
           model.put("template", "templates/phone.ftl");
           return new ModelAndView(model, layout);
