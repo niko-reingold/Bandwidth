@@ -67,12 +67,13 @@ public class Main {
           } else if ("text" == request.attribute("action")){
             sendText(number,"+18328627643",text);
           }
-
-          get("/", (req, res) -> {
+          return null;
+        });
+        get("/", (req, res) -> {
             response.type("application/xml");
             response.body(getResponse().toXml());
+            return null;
           });
-        });
 
   }
 
