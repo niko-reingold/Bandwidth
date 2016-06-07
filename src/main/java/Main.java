@@ -71,7 +71,7 @@ public class Main {
           get("/", (req, res) -> {
             response.type("application/xml");
             response.body(getResponse().toXml());
-          })
+          });
         });
 
   }
