@@ -69,7 +69,7 @@ public class Main extends HttpServlet {
             sendText(number,"+18328627643",text);
           }
 
-          this.doGet(req, resp);
+          this.doGet(new HttpServletRequest(), new HttpServletResponse());
         });
 
   }
