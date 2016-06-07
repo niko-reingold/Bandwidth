@@ -36,7 +36,7 @@ public class Main {
 
 		get("/transfer", (req, res) -> {
 			MustacheFactory mf = new DefaultMustacheFactory();
-			Mustache mustache = mf.compile("/bxml/callForwarding.xml");
+			Mustache mustache = mf.compile("callForwarding.xml");
 			StringWriter writer = new StringWriter();
 			mustache.execute(writer, new Main()).flush();
 
