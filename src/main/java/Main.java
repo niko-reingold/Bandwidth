@@ -38,10 +38,9 @@ import spark.template.velocity.VelocityTemplateEngine;
 
 import static spark.Spark.*;
 
-public class Main extends HttpServlet {
+public class Main {
 
-  public static final Logger logger = Logger.getLogger(Main.class.getName());
-  private Response response;
+  private Response action;
 
   public static void main(String[] args) {
 
@@ -69,7 +68,10 @@ public class Main extends HttpServlet {
             sendText(number,"+18328627643",text);
           }
 
-          this.doGet(new HttpServletRequest(), new HttpServletResponse());
+          get("/", (req, res) -> {
+            response.type("application/xml");
+            response.body(getResponse().toXml());
+          })
         });
 
   }
@@ -98,15 +100,13 @@ public class Main extends HttpServlet {
     }
   }
   
-  public Response outboundCall(String toNumber, String fromNumber, String text){
-       response = new Response();
+  public static void outboundCall(String toNumber, String fromNumber, String text){
+       action = new Response();
        Call call = new Call(fromNumber, toNumber);
        SpeakSentence speakSentence = new SpeakSentence(text, "paul", "male", "en");
 
-       response.add(call);
-       response.add(speakSentence);
-
-       return response;
+       action.add(call);
+       action.add(speakSentence);
   }
 
   private static int getHerokuAssignedPort() {
@@ -117,19 +117,8 @@ public class Main extends HttpServlet {
     return 4567;
   }
 
-  protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-      throws ServletException, IOException {
-
-        logger.info("get request /main");
-
-    try {
-      resp.setContentType("application/xml");
-      resp.getWriter().print(response.toXml());
-    } catch (XMLInvalidAttributeException | XMLInvalidTagContentException e) {
-         logger.log(Level.SEVERE, "invalid attribute or value", e);
-    } catch (XMLMarshallingException e) {
-         logger.log(Level.SEVERE, "invalid xml", e);
-    }
+  public Response getResponse(){
+    return action;
   }
 
 }
