@@ -48,7 +48,7 @@ public class Main {
           } else if ("text" == request.queryParams("action")){
             sendText(toNumber,"+18328627643",text);
           }
-          return ;
+          return null;
         });
        
 
