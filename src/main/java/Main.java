@@ -38,7 +38,7 @@ public class Main {
 			MustacheFactory mf = new DefaultMustacheFactory();
 			Mustache mustache = mf.compile("callForwarding.xml");
 			StringWriter writer = new StringWriter();
-			mustache.execute(writer, new Main()).flush();
+			writer = mustache.execute(writer, new Main()).flush();
 
 			return writer.toString();
 		});
