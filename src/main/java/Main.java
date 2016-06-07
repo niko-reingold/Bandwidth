@@ -41,6 +41,8 @@ public class Main {
           MustacheFactory mf = new DefaultMustacheFactory();
           Mustache mustache = mf.compile("template.mustache");
           mustache.execute(new PrintWriter(System.out), new Main()).flush();
+
+          System.out.println(request.queryParams("action"));
           
           if("call" == request.queryParams("action")){
             response.type("/bxml/call.xml");
