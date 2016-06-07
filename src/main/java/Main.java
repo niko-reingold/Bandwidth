@@ -42,10 +42,10 @@ public class Main {
           Mustache mustache = mf.compile("template.mustache");
           mustache.execute(new PrintWriter(System.out), new Main()).flush();
           
-          if("call" == request.queryParams("action")){
+          if("call" == request.body("action")){
             response.type("/bxml/call.xml");
             //outboundCall(number,"+18328627643",text);
-          } else if ("text" == request.queryParams("action")){
+          } else if ("text" == request.body("action")){
             sendText(toNumber,"+18328627643",text);
           }
           return null;
