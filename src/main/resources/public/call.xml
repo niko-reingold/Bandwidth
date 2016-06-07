@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<Response>
-	<Call from="+15052221113" to="+15552221234"></Call>
-	<SpeakSentence>Here is a sentence</SpeakSentence>
-</Response>

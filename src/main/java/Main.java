@@ -1,35 +1,10 @@
 import com.bandwidth.sdk.*;
 import com.bandwidth.sdk.model.Call;
 import com.bandwidth.sdk.model.Message;
-import com.bandwidth.sdk.xml.Response;
-import com.bandwidth.sdk.xml.elements.*;
-import com.bandwidth.sdk.exception.XMLInvalidAttributeException;
-import com.bandwidth.sdk.exception.XMLInvalidTagContentException;
-import com.bandwidth.sdk.exception.XMLMarshallingException;
 
-import java.io.IOException;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.Level;
-import java.util.logging.LogRecord;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
-import java.util.ArrayList;
-import java.util.Enumeration;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-
-import javax.xml.parsers.*;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
+import com.github.mustachejava.DefaultMustacheFactory;
+import com.github.mustachejava.Mustache;
+import com.github.mustachejava.MustacheFactory;
 
 import java.util.HashMap;
 
@@ -39,8 +14,6 @@ import spark.template.velocity.VelocityTemplateEngine;
 import static spark.Spark.*;
 
 public class Main {
-
-  private Response action;
 
   public static void main(String[] args) {
 
@@ -59,21 +32,22 @@ public class Main {
 
         post("/phone", (request, response) -> {
           
-          String number = "+1" + request.queryParams("number");
+          String toNumber = "+1" + request.queryParams("number");
           String text = request.queryParams("words");
+
+          MustacheFactory mf = new DefaultMustacheFactory();
+          Mustache mustache = mf.compile("template.mustache");
+          mustache.execute(new PrintWriter(System.out), new Example()).flush();
           
-          if("call" == request.attribute("action")){
+          if("call" == request.params("action")){
+
             //outboundCall(number,"+18328627643",text);
-          } else if ("text" == request.attribute("action")){
+          } else if ("text" == request.params("action")){
             sendText(number,"+18328627643",text);
           }
           return null;
         });
-        // get("/", (req, res) -> {
-        //     response.type("application/xml");
-        //     response.body(getResponse().toXml());
-        //     return null;
-        //   });
+       
 
   }
 
@@ -116,10 +90,6 @@ public class Main {
       return Integer.parseInt(processBuilder.environment().get("PORT"));
     }
     return 4567;
-  }
-
-  public Response getResponse(){
-    return action;
   }
 
 }
