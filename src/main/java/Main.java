@@ -38,9 +38,9 @@ public class Main {
           String toNumber = "+1" + request.queryParams("number");
           String text = request.queryParams("words");
 
-          MustacheFactory mf = new DefaultMustacheFactory();
-          Mustache mustache = mf.compile("template.mustache");
-          mustache.execute(new PrintWriter(System.out), new Main()).flush();
+          // MustacheFactory mf = new DefaultMustacheFactory();
+          // Mustache mustache = mf.compile("template.mustache");
+          // mustache.execute(new PrintWriter(System.out), new Main()).flush();
           
           if("call" == request.params("action")){
 
