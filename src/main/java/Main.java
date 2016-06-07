@@ -40,7 +40,7 @@ public class Main {
 
           MustacheFactory mf = new DefaultMustacheFactory();
           Mustache mustache = mf.compile("template.mustache");
-          mustache.execute(new PrintWriter(System.out), new Example()).flush();
+          mustache.execute(new PrintWriter(System.out), new Main()).flush();
           
           if("call" == request.params("action")){
 
