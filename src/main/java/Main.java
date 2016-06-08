@@ -76,9 +76,12 @@ public class Main {
 
 	public static void outboundCall(String toNumber, String fromNumber,
 			String text) {
+		try{
+			Call call = Call.create(toNumber, fromNumber);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
-		Call call = Call.create(toNumber, fromNumber);
-
 		try {
 			Thread.sleep(10000);
 		} catch (final InterruptedException ex) {
@@ -88,15 +91,24 @@ public class Main {
 		final Map<String, Object> params = new HashMap<String, Object>();
 		params.put("sentence", text);
 		params.put("voice", "paul");
-		call.speakSentence(params);
-
+		
+		try{
+			call.speakSentence(params);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		try {
 			Thread.sleep(4000);
 		} catch (final InterruptedException ex) {
 			Thread.currentThread().interrupt();
 		}
 		
-		call.hangUp();
+		try {
+			call.hangUp();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static void sendText(String toNumber, String fromNumber, String text) {
