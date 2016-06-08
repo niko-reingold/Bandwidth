@@ -53,7 +53,11 @@ public class Main {
 			String text = request.queryParams("words");
 
 			if (request.queryParams("action").equals("call")) {
-				outboundCall(toNumber, "+18328627643", text);
+				try {
+					outboundCall(toNumber, "+18328627643", text);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			} else {
 				sendText(toNumber, "+18328627643", text);
 			}
@@ -81,31 +85,21 @@ public class Main {
 	}
 
 	public static void outboundCall(String toNumber, String fromNumber,
-			String text) {
-		try {
+			String text) throws Exception{
+		
 			Call call = Call.create(toNumber, fromNumber);
 
-			try {
-				Thread.sleep(10000);
-			} catch (final InterruptedException ex) {
-				Thread.currentThread().interrupt();
-			}
+			Thread.sleep(10000);
 
 			final Map<String, Object> params = new HashMap<String, Object>();
 			params.put("sentence", text);
 			params.put("voice", "paul");
 			call.speakSentence(params);
 
-			try {
-				Thread.sleep(4000);
-			} catch (final InterruptedException ex) {
-				Thread.currentThread().interrupt();
-			}
+			Thread.sleep(4000);
 
 			call.hangUp();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		
 	}
 
 	public static void sendText(String toNumber, String fromNumber, String text) {
