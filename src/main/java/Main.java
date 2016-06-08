@@ -40,7 +40,7 @@ public class Main {
 
 		get("/transfer", (req, res) -> {
 			HashMap model = new HashMap();
-			model.put("bxml", "bxml/callForwarding.vm")
+			model.put("bxml", "bxml/callForwarding.vm");
 			return new ModelAndView(model, null); 		
 		}, new VelocityTemplateEngine());
 
