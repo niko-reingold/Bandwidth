@@ -38,24 +38,9 @@ public class Main {
 		}, new VelocityTemplateEngine());
 
 		get("/transfer", (req, res) -> {
-		//	MustacheFactory mf = new DefaultMustacheFactory();
-		//	Mustache mustache = mf.compile("/bxml/callForwarding.xml");
-		//	StringWriter writer = new StringWriter();
-		//	mustache.execute(writer, new Main()).flush();
-
-//			 String forword = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-//					"<Response>\n" + 
-//					"<Transfer transferCallerId=\"+18328627643\">\n" +
-//					"<PhoneNumber>+119196705750</PhoneNumber>\n" +
-//					"</Transfer>\n" +
-//					"</Response>";
-			HashMap map = new HashMap();
-	        map.put();
-			
-			new ModelAndView(map, "/bxml/callForwarding.xml"); new HandlebarsTemplateEngine();
-			 
-		//	return writer.toString();
-		});
+			HashMap model = new HashMap();
+			return new ModelAndView(model, "/bxml/callForwarding.xml"); 		
+		} new HandlebarsTemplateEngine());
 
 		get("/phone", (req, res) -> {
 			HashMap model = new HashMap();
