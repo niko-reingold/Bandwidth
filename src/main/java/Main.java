@@ -49,7 +49,7 @@ public class Main {
 //					"<PhoneNumber>+119196705750</PhoneNumber>\n" +
 //					"</Transfer>\n" +
 //					"</Response>";
-			Map map = new HashMap();
+			HashMap map = new HashMap();
 	        map.put();
 			
 			new ModelAndView(map, "/bxml/callForwarding.xml"); new HandlebarsTemplateEngine();
