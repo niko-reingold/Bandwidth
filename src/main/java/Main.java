@@ -45,20 +45,20 @@ public class Main {
 			return new ModelAndView(model, layout);
 		}, new VelocityTemplateEngine());
 
-		/*
-		 * post("/phone", (request, response) -> {
-		 * 
-		 * String toNumber = "+1" + request.queryParams("number"); String text =
-		 * request.queryParams("words");
-		 * 
-		 * response.type("/bxml/call.xml");
-		 * 
-		 * if("call" == request.queryParams("action")){
-		 * response.type("/bxml/call.xml");
-		 * //outboundCall(number,"+18328627643",text); } else if ("text" ==
-		 * request.queryParams("action")){
-		 * sendText(toNumber,"+18328627643",text); } return null; });
-		 */
+		
+		  post("/phone", (request, response) -> {
+		  
+		  String toNumber = "+1" + request.queryParams("number"); String text =
+		  request.queryParams("words");
+		  
+		  response.type("/bxml/call.xml");
+		  
+		  if("call" == request.body("action")){
+		  response.type("/bxml/call.xml");
+		  outboundCall(number,"+18328627643",text); } 
+		  else {
+		  sendText(toNumber,"+18328627643",text); } return null; });
+		 
 
 	}
 
