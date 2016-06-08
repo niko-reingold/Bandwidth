@@ -2,12 +2,6 @@ import com.bandwidth.sdk.*;
 import com.bandwidth.sdk.model.Call;
 import com.bandwidth.sdk.model.Message;
 
-import com.github.jknack.handlebars.Handlebars;
-import com.github.jknack.handlebars.Template;
-import com.github.jknack.handlebars.cache.GuavaTemplateCache;
-import com.github.jknack.handlebars.io.ClassPathTemplateLoader;
-import com.github.jknack.handlebars.io.TemplateLoader;
-import com.github.jknack.handlebars.io.TemplateSource;
 import java.io.StringWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -40,7 +34,7 @@ public class Main {
 
 		get("/transfer", (req, res) -> {
 			HashMap model = new HashMap();
-			return new ModelAndView(model, "bxml/callForwarding.ftl"); 		
+			return new ModelAndView(model, "bxml/callForwarding.vm"); 		
 		}, new VelocityTemplateEngine());
 
 		get("/phone", (req, res) -> {
