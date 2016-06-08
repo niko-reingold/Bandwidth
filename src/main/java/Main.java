@@ -17,6 +17,8 @@ import static spark.Spark.*;
 
 public class Main {
 
+	String transferNumber = null;
+
 	public static void main(String[] args) {
 
 		port(getHerokuAssignedPort());
@@ -34,8 +36,7 @@ public class Main {
 
 		get("/transfer", (req, res) -> {
 			HashMap model = new HashMap();
-			model.put("calledNumber", "+155555555555");
-			model.put("transferNumber", "+15556445555");
+			model.put("transferNumber", tansferNumber);
 			return new ModelAndView(model, "bxml/callForwarding.ftl");
 		}, new VelocityTemplateEngine());
 
@@ -50,10 +51,8 @@ public class Main {
 			String toNumber = "+1" + request.queryParams("number");
 			String text = request.queryParams("words");
 
-			response.type("/bxml/call.xml");
-
 			if (request.queryParams("action").equals("call")) {
-				response.type("/bxml/call.xml");
+
 			} else {
 				sendText(toNumber, "+18328627643", text);
 			}
@@ -75,6 +74,31 @@ public class Main {
 		}
 	}
 
+	public static void outboundCall(String toNumber, String fromNumber,
+			String text) {
+		
+		Call call = Call.create(toNumber, fromNumber);
+
+		try {
+			Thread.sleep(10000);
+		} catch (final InterruptedException ex) {
+			Thread.currentThread().interrupt();
+		}
+
+		final Map<String, Object> params = new HashMap<String, Object>();
+		params.put("sentence", text);
+		params.put("voice", "paul");
+		call.speakSentence(params);
+
+		try {
+			Thread.sleep(4000);
+		} catch (final InterruptedException ex) {
+			Thread.currentThread().interrupt();
+		}
+		
+		call.hangUp();
+	}
+
 	public static void sendText(String toNumber, String fromNumber, String text) {
 		try {
 			Message message = Message.create(toNumber, fromNumber, text);
@@ -90,6 +114,14 @@ public class Main {
 			return Integer.parseInt(processBuilder.environment().get("PORT"));
 		}
 		return 4567;
+	}
+
+	public String getTransferNumber() {
+		return transferNumber;
+	}
+
+	public void setTransferNumber(String num) {
+		transferNumber = "+1" + num;
 	}
 
 }
