@@ -53,6 +53,7 @@ public class Main {
 			String text = request.queryParams("words");
 
 			if (request.queryParams("action").equals("call")) {
+				System.out.println("Going to try and make call.");
 				try {
 					outboundCall(toNumber, "+18328627643", text);
 				} catch (Exception e) {
@@ -85,21 +86,27 @@ public class Main {
 	}
 
 	public static void outboundCall(String toNumber, String fromNumber,
-			String text) throws Exception{
-		
-			Call call = Call.create(toNumber, fromNumber);
+			String text) throws Exception {
 
-			Thread.sleep(10000);
+		System.out.println(toNumber);
+		System.out.println(fromNumber);
+		System.out.println(text);
+		System.out.println("Inside call");
+		Call call = Call.create(toNumber, fromNumber);
+		System.out.println("Call created");
 
-			final Map<String, Object> params = new HashMap<String, Object>();
-			params.put("sentence", text);
-			params.put("voice", "paul");
-			call.speakSentence(params);
+		Thread.sleep(10000);
 
-			Thread.sleep(4000);
+		final Map<String, Object> params = new HashMap<String, Object>();
+		params.put("sentence", text);
+		params.put("voice", "paul");
+		call.speakSentence(params);
 
-			call.hangUp();
-		
+		System.out.println("Sentence Spoken");
+		Thread.sleep(4000);
+
+		call.hangUp();
+
 	}
 
 	public static void sendText(String toNumber, String fromNumber, String text) {
