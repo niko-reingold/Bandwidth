@@ -31,6 +31,7 @@ public class Main {
 		get("/", (req, res) -> {
 			HashMap model = new HashMap();
 			model.put("template", "templates/phone.ftl");
+			model.put("transferNumber", transferNumber);
 			return new ModelAndView(model, layout);
 		}, new VelocityTemplateEngine());
 
@@ -58,6 +59,10 @@ public class Main {
 			}
 			return null;
 		});
+		
+		post("/transfer", (request, response) -> {
+			setTransferNumber(request.queryParams("forward"));;
+		})
 
 	}
 
