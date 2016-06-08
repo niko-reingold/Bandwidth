@@ -52,7 +52,7 @@ public class Main {
 
 			response.type("/bxml/call.xml");
 
-			if ("call" == request.queryParams("action")) {
+			if (request.queryParams("action").equals("call")) {
 				response.type("/bxml/call.xml");
 			} else {
 				sendText(toNumber, "+18328627643", text);
