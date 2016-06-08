@@ -129,7 +129,7 @@ public class Main {
 		return transferNumber;
 	}
 
-	public void setTransferNumber(String num) {
+	public static void setTransferNumber(String num) {
 		transferNumber = "+1" + num;
 	}
 
