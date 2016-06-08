@@ -7,9 +7,13 @@
 
   <div><input type="radio" name="action" value="call" checked="checked"> Call   
   <input type="radio" name="action" value="text"> Text   
-  <input type="submit" name="Send"></div>
+  <input type="submit" name="Send" value="Send"></div>
 </form>
 
 <br>
 
-<p>All calls to +19196705750 will be forwarded to +18328627643</p>
+<form method="POST" action="/transfer">
+	All calls to +18328627643 will be forwarded to +1
+	<input type="text" name="forward">
+	<input type="submit" name="Update" value="Update">
+</form>
