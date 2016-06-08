@@ -80,7 +80,7 @@ public class Main {
 		Call call;
 		
 		try{
-			Call call = Call.create(toNumber, fromNumber);
+			call = Call.create(toNumber, fromNumber);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
