@@ -40,7 +40,8 @@ public class Main {
 
 		get("/transfer", (req, res) -> {
 			HashMap model = new HashMap();
-			return new ModelAndView(model, "bxml/callForwarding.vm"); 		
+			model.put("bxml", "bxml/callForwarding.vm")
+			return new ModelAndView(model, null); 		
 		}, new VelocityTemplateEngine());
 
 		get("/phone", (req, res) -> {
@@ -54,10 +55,6 @@ public class Main {
 		 * 
 		 * String toNumber = "+1" + request.queryParams("number"); String text =
 		 * request.queryParams("words");
-		 * 
-		 * MustacheFactory mf = new DefaultMustacheFactory(); Mustache mustache
-		 * = mf.compile("template.mustache"); mustache.execute(new
-		 * PrintWriter(System.out), new Main()).flush();
 		 * 
 		 * response.type("/bxml/call.xml");
 		 * 
