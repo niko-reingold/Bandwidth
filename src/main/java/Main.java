@@ -77,12 +77,9 @@ public class Main {
 	public static void outboundCall(String toNumber, String fromNumber,
 			String text) {
 		
-		get("/call", (req, res) -> {
-			HashMap model = new HashMap();
-			model.put("toNumber", toNumber);
-			model.put("text", text);
-			return new ModelAndView(model, "bxml/call.ftl");
-		}, new VelocityTemplateEngine());
+		Call call = Call.create(toNumber, fromNumber);
+		System.out.println("Updated call:" + call);
+		call.hangUp();
 	}
 
 	public static void sendText(String toNumber, String fromNumber, String text) {
