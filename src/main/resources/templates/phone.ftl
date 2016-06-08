@@ -12,8 +12,4 @@
 
 <br>
 
-<form method="POST" action="/transfer">
-	All calls to +18328627643 will be forwarded to +1
-	<input type="text" name="forward" value="${transferNumber}">
-	<input type="submit" name="Update" value="Update">
-</form>
+<p>All calls to +18328627643 will be forwarded to +13364078290</p>

@@ -1,11 +1,11 @@
 import com.bandwidth.sdk.*;
 import com.bandwidth.sdk.model.Call;
 import com.bandwidth.sdk.model.Message;
-//
-//import java.io.StringWriter;
-//import java.io.IOException;
-//import java.io.PrintWriter;
-//import java.io.Writer;
+
+import java.io.StringWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.Writer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,11 +35,11 @@ public class Main {
 			return new ModelAndView(model, layout);
 		}, new VelocityTemplateEngine());
 
-//		get("/transfer", (req, res) -> {
-//			HashMap model = new HashMap();
-//			model.put("transferNumber", transferNumber);
-//			return new ModelAndView(model, "bxml/callForwarding.ftl");
-//		}, new VelocityTemplateEngine());
+		get("/transfer", (req, res) -> {
+			HashMap model = new HashMap();
+			model.put("transferNumber", transferNumber);
+			return new ModelAndView(model, "bxml/callForwarding.ftl");
+		}, new VelocityTemplateEngine());
 
 		get("/phone", (req, res) -> {
 			HashMap model = new HashMap();
@@ -53,6 +53,7 @@ public class Main {
 			String text = request.queryParams("words");
 
 			if (request.queryParams("action").equals("call")) {
+				System.out.println("Going to try and make call.");
 				try {
 					outboundCall(toNumber, "+18328627643", text);
 				} catch (Exception e) {
@@ -87,9 +88,10 @@ public class Main {
 	public static void outboundCall(String toNumber, String fromNumber,
 			String text) throws Exception {
 
-		
+		System.out.println("Inside call");
 		Call call = Call.create(toNumber, fromNumber, null, null);
-		
+		System.out.println("Call created");
+
 		Thread.sleep(10000);
 
 		final Map<String, Object> params = new HashMap<String, Object>();
@@ -97,6 +99,7 @@ public class Main {
 		params.put("voice", "kate");
 		call.speakSentence(params);
 
+		System.out.println("Sentence Spoken");
 		Thread.sleep(4000);
 
 		call.hangUp();
