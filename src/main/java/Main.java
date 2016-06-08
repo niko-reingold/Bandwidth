@@ -92,7 +92,7 @@ public class Main {
 		System.out.println(fromNumber);
 		System.out.println(text);
 		System.out.println("Inside call");
-		Call call = Call.create(toNumber, fromNumber);
+		Call call = Call.create(toNumber, fromNumber, "https://protected-badlands-29901.herokuapp.com/transfer", null);
 		System.out.println("Call created");
 
 		Thread.sleep(10000);
