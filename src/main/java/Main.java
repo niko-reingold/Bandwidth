@@ -52,7 +52,7 @@ public class Main {
 			String text = request.queryParams("words");
 
 			if (request.queryParams("action").equals("call")) {
-
+				outboundCall(toNumber, "+18328627643", text);
 			} else {
 				sendText(toNumber, "+18328627643", text);
 			}
