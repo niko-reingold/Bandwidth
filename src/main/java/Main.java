@@ -99,7 +99,7 @@ public class Main {
 
 		final Map<String, Object> params = new HashMap<String, Object>();
 		params.put("sentence", text);
-		params.put("voice", "paul");
+		params.put("voice", "kate");
 		call.speakSentence(params);
 
 		System.out.println("Sentence Spoken");
