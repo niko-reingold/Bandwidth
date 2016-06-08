@@ -1,3 +1,4 @@
+<br><br>
 <form method="POST" action='/phone'>
   <div>Number: +1
   <input type="text" name="number" required="true"></div> <br>

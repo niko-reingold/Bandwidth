@@ -77,41 +77,12 @@ public class Main {
 	public static void outboundCall(String toNumber, String fromNumber,
 			String text) {
 		
-		Call call = null;
-		
-		try{
-			call = Call.create(toNumber, fromNumber);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		try {
-			Thread.sleep(10000);
-		} catch (final InterruptedException ex) {
-			Thread.currentThread().interrupt();
-		}
-
-		final Map<String, Object> params = new HashMap<String, Object>();
-		params.put("sentence", text);
-		params.put("voice", "paul");
-		
-		try{
-			call.speakSentence(params);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		try {
-			Thread.sleep(4000);
-		} catch (final InterruptedException ex) {
-			Thread.currentThread().interrupt();
-		}
-		
-		try {
-			call.hangUp();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		get("/call", (req, res) -> {
+			HashMap model = new HashMap();
+			model.put("toNumber", toNumber);
+			model.put("text", text);
+			return new ModelAndView(model, "bxml/call.ftl");
+		}, new VelocityTemplateEngine());
 	}
 
 	public static void sendText(String toNumber, String fromNumber, String text) {
