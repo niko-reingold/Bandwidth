@@ -49,7 +49,7 @@ public class Main {
 			Map map = new HashMap();
 	        map.put();
 			
-			new ModelAndView(map, "/bxml/callForwarding.xml"), new HandlebarsTemplateEngine();
+			new ModelAndView(map, "/bxml/callForwarding.xml"); new HandlebarsTemplateEngine();
 			 
 		//	return writer.toString();
 		});
