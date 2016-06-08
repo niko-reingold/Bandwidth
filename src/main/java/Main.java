@@ -88,6 +88,9 @@ public class Main {
 	public static void outboundCall(String toNumber, String fromNumber,
 			String text) throws Exception {
 
+		System.out.println(toNumber);
+		System.out.println(fromNumber);
+		System.out.println(text);
 		System.out.println("Inside call");
 		Call call = Call.create(toNumber, fromNumber, null, null);
 		System.out.println("Call created");
