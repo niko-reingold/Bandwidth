@@ -17,7 +17,7 @@ import static spark.Spark.*;
 
 public class Main {
 
-	public static String transferNumber = null;
+	String transferNumber = null;
 
 	public static void main(String[] args) {
 
@@ -76,10 +76,30 @@ public class Main {
 
 	public static void outboundCall(String toNumber, String fromNumber,
 			String text) {
-		
-		Call call = Call.create(toNumber, fromNumber);
-		System.out.println("Updated call:" + call);
-		call.hangUp();
+		try {
+			Call call = Call.create(toNumber, fromNumber);
+
+			try {
+				Thread.sleep(10000);
+			} catch (final InterruptedException ex) {
+				Thread.currentThread().interrupt();
+			}
+
+			final Map<String, Object> params = new HashMap<String, Object>();
+			params.put("sentence", text);
+			params.put("voice", "paul");
+			call.speakSentence(params);
+
+			try {
+				Thread.sleep(4000);
+			} catch (final InterruptedException ex) {
+				Thread.currentThread().interrupt();
+			}
+
+			call.hangUp();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static void sendText(String toNumber, String fromNumber, String text) {
