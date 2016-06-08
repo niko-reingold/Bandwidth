@@ -76,6 +76,9 @@ public class Main {
 
 	public static void outboundCall(String toNumber, String fromNumber,
 			String text) {
+		
+		Call call;
+		
 		try{
 			Call call = Call.create(toNumber, fromNumber);
 		} catch (Exception e) {
