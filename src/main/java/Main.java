@@ -17,7 +17,7 @@ import static spark.Spark.*;
 
 public class Main {
 
-	String transferNumber = null;
+	public static String transferNumber = null;
 
 	public static void main(String[] args) {
 
