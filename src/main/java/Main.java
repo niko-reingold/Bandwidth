@@ -14,6 +14,7 @@ import java.io.PrintWriter;
 import java.io.Writer;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import spark.ModelAndView;
 import spark.template.velocity.VelocityTemplateEngine;
@@ -39,7 +40,7 @@ public class Main {
 
 		get("/transfer", (req, res) -> {
 			HashMap model = new HashMap();
-			return new ModelAndView(model, "bxml/callForwarding.xml"); 		
+			return new ModelAndView(model, "bxml/callForwarding.vm"); 		
 		}, new VelocityTemplateEngine());
 
 		get("/phone", (req, res) -> {
