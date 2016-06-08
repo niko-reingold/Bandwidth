@@ -36,7 +36,7 @@ public class Main {
 			HashMap model = new HashMap();
 			model.put("calledNumber", "+155555555555");
 			model.put("transferNumber", "+15556445555");
-			return new ModelAndView(model, "bxml/callForwarding.ftl"); 		
+			return new ModelAndView(model, "bxml/callForwarding.ftl");
 		}, new VelocityTemplateEngine());
 
 		get("/phone", (req, res) -> {
@@ -45,28 +45,27 @@ public class Main {
 			return new ModelAndView(model, layout);
 		}, new VelocityTemplateEngine());
 
-		
-		  post("/phone", (request, response) -> {
-		  
-		  String toNumber = "+1" + request.queryParams("number"); String text =
-		  request.queryParams("words");
-		  
-		  response.type("/bxml/call.xml");
-		  
-		  if("call" == request.body("action")){
-		  response.type("/bxml/call.xml");
-		  outboundCall(number,"+18328627643",text); } 
-		  else {
-		  sendText(toNumber,"+18328627643",text); } return null; });
-		 
+		post("/phone", (request, response) -> {
+
+			String toNumber = "+1" + request.queryParams("number");
+			String text = request.queryParams("words");
+
+			response.type("/bxml/call.xml");
+
+			if ("call" == request.body("action")) {
+				response.type("/bxml/call.xml");
+			} else {
+				sendText(toNumber, "+18328627643", text);
+			}
+			return null;
+		});
 
 	}
 
 	public static void authenticate() {
 		String userId = "u-72jjash6ldbrtsjvmrsfetq";
 		String apiToken = "t-depqhu2y25ut7gsdkussxbq";
-		String apiSecret = "ajk2odf574li7qvbkz7qtg3fr36wsfnttcpso6y"; 
-																		
+		String apiSecret = "ajk2odf574li7qvbkz7qtg3fr36wsfnttcpso6y";
 
 		try {
 			BandwidthClient.getInstance().setCredentials(userId, apiToken,
