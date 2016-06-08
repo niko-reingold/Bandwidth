@@ -62,6 +62,7 @@ public class Main {
 		
 		post("/transfer", (request, response) -> {
 			setTransferNumber(request.queryParams("forward"));
+			return null;
 		});
 
 	}
