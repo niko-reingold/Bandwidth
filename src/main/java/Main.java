@@ -39,7 +39,7 @@ public class Main {
 
 		get("/transfer", (req, res) -> {
 			HashMap model = new HashMap();
-			return new ModelAndView(model, "/bxml/callForwarding.xml"); 		
+			return new ModelAndView(model, "bxml/callForwarding.xml"); 		
 		}, new VelocityTemplateEngine());
 
 		get("/phone", (req, res) -> {
