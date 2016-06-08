@@ -40,14 +40,16 @@ public class Main {
 		//	StringWriter writer = new StringWriter();
 		//	mustache.execute(writer, new Main()).flush();
 
-			 String forword = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-					"<Response>\n" + 
-					"<Transfer transferCallerId=\"+18328627643\">\n" +
-					"<PhoneNumber>+119196705750</PhoneNumber>\n" +
-					"</Transfer>\n" +
-					"</Response>";
+//			 String forword = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+//					"<Response>\n" + 
+//					"<Transfer transferCallerId=\"+18328627643\">\n" +
+//					"<PhoneNumber>+119196705750</PhoneNumber>\n" +
+//					"</Transfer>\n" +
+//					"</Response>";
+			Map map = new HashMap();
+	        map.put();
 			
-			return forward; 
+			new ModelAndView(map, "/bxml/callForwarding.xml"), new HandlebarsTemplateEngine()
 			 
 		//	return writer.toString();
 		});
