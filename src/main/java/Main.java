@@ -36,7 +36,7 @@ public class Main {
 
 		get("/transfer", (req, res) -> {
 			HashMap model = new HashMap();
-			model.put("transferNumber", tansferNumber);
+			model.put("transferNumber", transferNumber);
 			return new ModelAndView(model, "bxml/callForwarding.ftl");
 		}, new VelocityTemplateEngine());
 
