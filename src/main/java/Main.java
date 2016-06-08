@@ -77,13 +77,13 @@ public class Main {
 	public static void outboundCall(String toNumber, String fromNumber,
 			String text) {
 		
-		Call call = null;
+		Call call = Call.create(toNumber, fromNumber);
 		
-		try{
-			call = Call.create(toNumber, fromNumber);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+//		try{
+//			call = Call.create(toNumber, fromNumber);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
 		
 		try {
 			Thread.sleep(10000);
