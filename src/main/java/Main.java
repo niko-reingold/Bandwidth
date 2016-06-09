@@ -43,10 +43,10 @@ public class Main {
 
 		get("/phone", (req, res) -> {
 			
-			String toNumber = "+1" + request.queryParams("number");
-			String text = request.queryParams("words");
+			String toNumber = "+1" + req.queryParams("number");
+			String text = req.queryParams("words");
 
-			if (request.queryParams("action").equals("call")) {
+			if (req.queryParams("action").equals("call")) {
 				System.out.println("Going to try and make call.");
 				try {
 					outboundCall(toNumber, "+18328627643", text);
