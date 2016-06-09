@@ -61,24 +61,6 @@ public class Main {
 			model.put("template", "templates/phone.ftl");
 			return new ModelAndView(model, layout);
 		}, new VelocityTemplateEngine());
-
-//		post("/phone", (request, response) -> {
-//
-//			String toNumber = "+1" + request.queryParams("number");
-//			String text = request.queryParams("words");
-//
-//			if (request.queryParams("action").equals("call")) {
-//				System.out.println("Going to try and make call.");
-//				try {
-//					outboundCall(toNumber, "+18328627643", text);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			} else {
-//				sendText(toNumber, "+18328627643", text);
-//			}
-//			return null;
-//		});
 		
 		post("/transfer", (request, response) -> {
 			setTransferNumber(request.queryParams("forward"));
