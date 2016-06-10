@@ -88,6 +88,7 @@ public class Main {
 
         get("/transfer", (req, res) -> {
 
+            String bxml = "";
             //           String callerID = req.queryParams("callId");
             if(req.queryParams("eventType").equals("incomingcall")){
                 try {
@@ -100,7 +101,7 @@ public class Main {
                     response.add(speakSentence);
                     response.add(transfer);
 
-                    String bxml = response.toXml();
+                    bxml = response.toXml();
 
                     res.type("application/xml");
                     res.body(bxml);
