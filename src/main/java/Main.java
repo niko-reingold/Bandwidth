@@ -88,6 +88,8 @@ public class Main {
 		System.out.println("Call created");
 
 		Thread.sleep(10000);
+		
+		System.out.println("About to speak sentence");
 
 		final Map<String, Object> params = new HashMap<String, Object>();
 		params.put("sentence", text);
