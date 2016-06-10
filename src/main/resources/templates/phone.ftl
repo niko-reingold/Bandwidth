@@ -12,4 +12,4 @@
 
 <br>
 
-<p>All calls to +18328627643 will be forwarded to +13364078290</p>
+<p>All calls to $fromNumber will be forwarded to +19195158209, a Raleigh, NC weather station.</p>

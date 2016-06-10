@@ -1,6 +1,11 @@
 import com.bandwidth.sdk.*;
 import com.bandwidth.sdk.model.Call;
 import com.bandwidth.sdk.model.Message;
+import com.bandwidth.sdk.exception.XMLInvalidAttributeException;
+import com.bandwidth.sdk.exception.XMLInvalidTagContentException;
+import com.bandwidth.sdk.exception.XMLMarshallingException;
+import com.bandwidth.sdk.xml.Response;
+import com.bandwidth.sdk.xml.elements.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +22,7 @@ public class Main {
 		port(getHerokuAssignedPort());
 
 		authenticate();
+		String fromNumber = System.getenv().get("PHONE_NUMBER");
 
 		staticFileLocation("/public");
 		String layout = "templates/layout.ftl";
@@ -24,37 +30,91 @@ public class Main {
 		get("/", (req, res) -> {
 			HashMap model = new HashMap();
 			model.put("template", "templates/phone.ftl");
+			model.put("fromNumber", fromNumber);
 			return new ModelAndView(model, layout);
 		}, new VelocityTemplateEngine());
 
 		get("/phone", (req, res) -> {
-			
+
+            String host = "http://" + req.host();
+            System.out.println(host);
+
+
 			String toNumber = "+1" + req.queryParams("number");
 			String text = req.queryParams("words");
 
 			if (req.queryParams("action").equals("call")) {
 				System.out.println("Going to try to make call.");
 				try {
-					outboundCall(toNumber, "+18328627643", text);
+					outboundCall(toNumber, fromNumber, host, text);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			} else {
 				System.out.println("Going to try to send text.");
-				sendText(toNumber, "+18328627643", text);
+				sendText(toNumber, fromNumber, text);
 			}
 			
 			HashMap model = new HashMap();
 			model.put("template", "templates/phone.ftl");
+			model.put("fromNumber", fromNumber);
 			return new ModelAndView(model, layout);
 		}, new VelocityTemplateEngine());
+
+        get("/callEvents", (req, res) -> {
+            String text = req.queryParams("tag");
+            String event = req.queryParams("eventType");
+
+            if(event.equals("answer")){
+                try {
+                    Response response = new Response();
+
+                    SpeakSentence speakSentence = new SpeakSentence(text, "kate", "female", "en_US");
+                    Hangup hangup = new Hangup();
+
+                    response.add(speakSentence);
+                    response.add(hangup);
+                    String bxml = response.toXml();
+
+                    res.type("application/xml");
+                    res.body(bxml);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        });
+
+        get("/transfer", (req, res) -> {
+
+ //           String callerID = req.queryParams("callId");
+
+            try {
+                Response response = new Response();
+
+                SpeakSentence speakSentence = new SpeakSentence("Transferring your call, please wait.", "paul", "male", "en_US");
+//                Transfer transfer = new Transfer("+13364078290", callerID);
+                Transfer transfer = new Transfer("+13364078290", fromNumber);
+
+                response.add(speakSentence);
+                response.add(transfer);
+
+                String bxml = response.toXml();
+
+                res.type("application/xml");
+                res.body(bxml);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        });
 
 	}
 
 	public static void authenticate() {
-		String userId = "u-72jjash6ldbrtsjvmrsfetq";
-		String apiToken = "t-depqhu2y25ut7gsdkussxbq";
-		String apiSecret = "ajk2odf574li7qvbkz7qtg3fr36wsfnttcpso6y";
+		String userId = System.getenv().get("BANDWIDTH_USER_ID");
+		String apiToken = System.getenv().get("BANDWIDTH_API_TOKEN");
+		String apiSecret = System.getenv().get("BANDWIDTH_API_SECRET");
 
 		try {
 			BandwidthClient.getInstance().setCredentials(userId, apiToken,
@@ -64,16 +124,16 @@ public class Main {
 		}
 	}
 
-	public static void outboundCall(String toNumber, String fromNumber,
+	public static void outboundCall(String toNumber, String fromNumber, String callbackURL,
 			String text) throws Exception {
 
 		System.out.println("Inside call function");
 		System.out.println("toNumber: " + toNumber);
 		System.out.println("fromNumber: " + fromNumber);
 		System.out.println("Message: " + text);
-		Call call = Call.create(toNumber, fromNumber, "https://protected-badlands-29901.herokuapp.com/phone", null);
+		Call.create(toNumber, fromNumber, callbackURL, text);
 		System.out.println("Call created");
-
+/*
 		Thread.sleep(20000);
 		
 		System.out.println("About to speak sentence");
@@ -89,7 +149,7 @@ public class Main {
 		Thread.sleep(4000);
 
 		call.hangUp();
-
+*/
 	}
 
 	public static void sendText(String toNumber, String fromNumber, String text) {

@@ -1,0 +1,6 @@
+<Response>
+    <SpeakSentence gender="male" locale="en_US" voice="paul">Transferring your call, please wait.</SpeakSentence>
+    <Transfer transferCallerId="$PHONE_NUMBER" transferTo="+11234567892">
+        <SpeakSentence gender="male" locale="en_US" voice="paul">Inner speak sentence.</SpeakSentence>
+    </Transfer>
+</Response>
