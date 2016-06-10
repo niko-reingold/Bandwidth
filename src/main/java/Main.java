@@ -92,7 +92,7 @@ public class Main {
 
             String bxml = "";
             //           String callerID = req.queryParams("callId");
-            if(req.queryParams("eventType").equals("incomingcall")){
+            if(req.queryParams("eventType").equals("answer")){
                 System.out.println("recieving call");
                 try {
                     Response response = new Response();
