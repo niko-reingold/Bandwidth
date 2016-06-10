@@ -104,10 +104,11 @@ public class Main {
 
                 res.type("application/xml");
                 res.body(bxml);
+                System.out.println(bxml);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            return null;
+            return res;
         });
 
 	}
