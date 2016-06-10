@@ -92,6 +92,8 @@ public class Main {
 		final Map<String, Object> params = new HashMap<String, Object>();
 		params.put("sentence", text);
 		params.put("voice", "kate");
+		params.put("gender", "female");
+		params.put("locale", "en_US");
 		call.speakSentence(params);
 
 		System.out.println("Sentence Spoken");
