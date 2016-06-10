@@ -87,7 +87,7 @@ public class Main {
 		Call call = Call.create(toNumber, fromNumber, "https://protected-badlands-29901.herokuapp.com/phone", null);
 		System.out.println("Call created");
 
-		Thread.sleep(20000);
+		Thread.sleep(10000);
 
 		final Map<String, Object> params = new HashMap<String, Object>();
 		params.put("sentence", text);
