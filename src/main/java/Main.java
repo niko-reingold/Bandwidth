@@ -113,7 +113,8 @@ public class Main {
                 return bxml;
 
             } else {
-                return res.status(200);
+                res.status(200);
+                return res;
             }
         });
 
