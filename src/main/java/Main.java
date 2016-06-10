@@ -68,6 +68,9 @@ public class Main {
 
             String bxml = "";
 
+            System.out.println(text);
+            System.out.println(event);
+
             if(event.equals("answer")){
                 try {
                     Response response = new Response();
