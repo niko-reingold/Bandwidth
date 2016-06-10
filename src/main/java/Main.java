@@ -80,10 +80,10 @@ public class Main {
 	public static void outboundCall(String toNumber, String fromNumber,
 			String text) throws Exception {
 
-		System.out.println(toNumber);
-		System.out.println(fromNumber);
-		System.out.println(text);
-		System.out.println("Inside call");
+		System.out.println("Inside call function");
+		System.out.println("toNumber: " + toNumber);
+		System.out.println("fromNumber: " + fromNumber);
+		System.out.println("Message: " + text);
 		Call call = Call.create(toNumber, fromNumber, "https://protected-badlands-29901.herokuapp.com/phone", null);
 		System.out.println("Call created");
 
