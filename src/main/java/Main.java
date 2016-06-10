@@ -88,9 +88,12 @@ public class Main {
 
         get("/transfer", (req, res) -> {
 
+            System.out.println("In transfer");
+
             String bxml = "";
             //           String callerID = req.queryParams("callId");
             if(req.queryParams("eventType").equals("incomingcall")){
+                System.out.println("recieving call");
                 try {
                     Response response = new Response();
 
@@ -103,10 +106,11 @@ public class Main {
 
                     bxml = response.toXml();
 
-                    res.type("application/xml");
-                    res.body(bxml);
+                    System.out.println("Made bxml response");
                     System.out.println(bxml);
-                    System.out.println(res);
+
+//                    res.type("application/xml");
+//                    res.body(bxml);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
