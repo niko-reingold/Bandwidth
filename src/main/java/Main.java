@@ -42,13 +42,14 @@ public class Main {
 			String text = req.queryParams("words");
 
 			if (req.queryParams("action").equals("call")) {
-				System.out.println("Going to try and make call.");
+				System.out.println("Going to try to make call.");
 				try {
 					outboundCall(toNumber, "+18328627643", text);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			} else {
+				System.out.println("Going to try to send text.");
 				sendText(toNumber, "+18328627643", text);
 			}
 			
@@ -106,9 +107,13 @@ public class Main {
 	}
 
 	public static void sendText(String toNumber, String fromNumber, String text) {
+		System.out.println("Inside text function");
+		System.out.println("toNumber: " + toNumber);
+		System.out.println("fromNumber: " + fromNumber);
+		System.out.println("Message: " + text);
 		try {
 			Message message = Message.create(toNumber, fromNumber, text);
-			System.out.println("message:" + message);
+			System.out.println("Sent Message");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
