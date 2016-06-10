@@ -83,32 +83,36 @@ public class Main {
                     e.printStackTrace();
                 }
             }
-            return null;
+            return res;
         });
 
         get("/transfer", (req, res) -> {
 
- //           String callerID = req.queryParams("callId");
+            //           String callerID = req.queryParams("callId");
+            if(req.queryParams("eventType").equals("incomingcall")){
+                try {
+                    Response response = new Response();
 
-            try {
-                Response response = new Response();
-
-                SpeakSentence speakSentence = new SpeakSentence("Transferring your call, please wait.", "paul", "male", "en_US");
+                    SpeakSentence speakSentence = new SpeakSentence("Transferring your call, please wait.", "paul", "male", "en_US");
 //                Transfer transfer = new Transfer("+13364078290", callerID);
-                Transfer transfer = new Transfer("+13364078290", fromNumber);
+                    Transfer transfer = new Transfer("+13364078290", fromNumber);
 
-                response.add(speakSentence);
-                response.add(transfer);
+                    response.add(speakSentence);
+                    response.add(transfer);
 
-                String bxml = response.toXml();
+                    String bxml = response.toXml();
 
-                res.type("application/xml");
-                res.body(bxml);
-                System.out.println(bxml);
-            } catch (Exception e) {
-                e.printStackTrace();
+                    res.type("application/xml");
+                    res.body(bxml);
+                    System.out.println(bxml);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return res;
+
+            } else {
+                return res.status(200);
             }
-            return res;
         });
 
 	}
