@@ -110,7 +110,7 @@ public class Main {
                     System.out.println(bxml);
 
                     res.type("text/xml");
-                  return bxml;
+                    return bxml;
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
