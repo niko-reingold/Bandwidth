@@ -105,10 +105,11 @@ public class Main {
                     res.type("application/xml");
                     res.body(bxml);
                     System.out.println(bxml);
+                    System.out.println(res);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                return res;
+                return bxml;
 
             } else {
                 return res.status(200);
