@@ -12,8 +12,6 @@ import static spark.Spark.*;
 
 public class Main {
 
-	public static String transferNumber = null;
-
 	public static void main(String[] args) {
 
 		port(getHerokuAssignedPort());
@@ -28,12 +26,6 @@ public class Main {
 			model.put("template", "templates/phone.ftl");
 			model.put("transferNumber", transferNumber);
 			return new ModelAndView(model, layout);
-		}, new VelocityTemplateEngine());
-
-		get("/transfer", (req, res) -> {
-			HashMap model = new HashMap();
-			model.put("transferNumber", transferNumber);
-			return new ModelAndView(model, "bxml/callForwarding.ftl");
 		}, new VelocityTemplateEngine());
 
 		get("/phone", (req, res) -> {
@@ -57,11 +49,6 @@ public class Main {
 			model.put("template", "templates/phone.ftl");
 			return new ModelAndView(model, layout);
 		}, new VelocityTemplateEngine());
-		
-		post("/transfer", (request, response) -> {
-			setTransferNumber(request.queryParams("forward"));
-			return null;
-		});
 
 	}
 
@@ -125,14 +112,6 @@ public class Main {
 			return Integer.parseInt(processBuilder.environment().get("PORT"));
 		}
 		return 4567;
-	}
-
-	public String getTransferNumber() {
-		return transferNumber;
-	}
-
-	public static void setTransferNumber(String num) {
-		transferNumber = "+1" + num;
 	}
 
 }
