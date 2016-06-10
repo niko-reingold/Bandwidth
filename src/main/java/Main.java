@@ -77,13 +77,17 @@ public class Main {
                     response.add(hangup);
                     String bxml = response.toXml();
 
-                    res.type("application/xml");
-                    res.body(bxml);
+                    System.out.println("Made bxml response");
+                    System.out.println(bxml);
+
+                    res.type("text/xml");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            } else {
+                res.status(200);
+                return res;
             }
-            return res;
         });
 
         get("/transfer", (req, res) -> {
@@ -97,7 +101,7 @@ public class Main {
                 try {
                     Response response = new Response();
 
-                    SpeakSentence speakSentence = new SpeakSentence("Transferring your call, please wait.", "paul", "male", "en_US");
+                    SpeakSentence speakSentence = new SpeakSentence("Transferring your call, please wait.", "kate", "female", "en_US");
 //                Transfer transfer = new Transfer("+13364078290", callerID);
                     Transfer transfer = new Transfer("+13364078290", fromNumber);
 
