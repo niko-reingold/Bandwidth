@@ -66,6 +66,8 @@ public class Main {
             String text = req.queryParams("tag");
             String event = req.queryParams("eventType");
 
+            String bxml = "";
+
             if(event.equals("answer")){
                 try {
                     Response response = new Response();
@@ -75,7 +77,7 @@ public class Main {
 
                     response.add(speakSentence);
                     response.add(hangup);
-                    String bxml = response.toXml();
+                    bxml = response.toXml();
 
                     System.out.println("Made bxml response");
                     System.out.println(bxml);
@@ -84,6 +86,7 @@ public class Main {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                return bxml
             } else {
                 res.status(200);
                 return res;
