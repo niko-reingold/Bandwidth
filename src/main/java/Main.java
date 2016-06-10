@@ -36,8 +36,7 @@ public class Main {
 
 		get("/phone", (req, res) -> {
 
-            String host = "http://" + req.host();
-            System.out.println(host);
+
 
 
 			String toNumber = "+1" + req.queryParams("number");
@@ -46,6 +45,8 @@ public class Main {
 			if (req.queryParams("action").equals("call")) {
 				System.out.println("Going to try to make call.");
 				try {
+                    String host = "http://" + req.host() + "/callEvents";
+                    System.out.println(host);
 					outboundCall(toNumber, fromNumber, host, text);
 				} catch (Exception e) {
 					e.printStackTrace();
