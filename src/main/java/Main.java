@@ -109,13 +109,11 @@ public class Main {
                     System.out.println("Made bxml response");
                     System.out.println(bxml);
 
-//                    res.type("application/xml");
-//                    res.body(bxml);
+                    res.type("text/xml");
+                  return bxml;
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                return bxml;
-
             } else {
                 res.status(200);
                 return res;
