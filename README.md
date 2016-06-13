@@ -1,5 +1,7 @@
 # java-getting-started
 
+This app allows you to call and text a message.  Calling and texting the number will forward it.
+
 A barebones Java app, which can easily be deployed to Heroku.
 
 This application supports the [Getting Started with Java on Heroku](https://devcenter.heroku.com/articles/getting-started-with-java) article - check it out.
