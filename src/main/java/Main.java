@@ -105,7 +105,7 @@ public class Main {
 
 				String originalNumber = req.queryParams("from");
 				String originalText = req.queryParams("text");
-				SendMessage sendMessage = new SendMessage("+13364078290", fromNumber, originalNumber + ": " + originalText);
+				SendMessage sendMessage = new SendMessage(fromNumber, "+13364078290", originalNumber + ": " + originalText);
 
 				response.add(sendMessage);
 
