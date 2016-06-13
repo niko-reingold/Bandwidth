@@ -22,8 +22,6 @@ public class Main {
 		port(getHerokuAssignedPort());
 
 		authenticate();
-		String toNumber = "+1" + req.queryParams("number");
-		String text = req.queryParams("words");
 		String fromNumber = System.getenv().get("PHONE_NUMBER");
 
 		staticFileLocation("/public");
@@ -38,13 +36,18 @@ public class Main {
 
 		get("/phone", (req, res) -> {
 
+
+
+
+			String toNumber = "+1" + req.queryParams("number");
+			String text = req.queryParams("words");
+
 			if (req.queryParams("action").equals("call")) {
 				System.out.println("Going to try to make call.");
 				try {
-					get("/callEvents", null);
-//                    String host = "http://" + req.host() + "/callEvents";
-//                    System.out.println(host);
-//					outboundCall(toNumber, fromNumber, host, text);
+                    String host = "http://" + req.host() + "/callEvents";
+                    System.out.println(host);
+					outboundCall(toNumber, fromNumber, host, text);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -60,26 +63,21 @@ public class Main {
 		}, new VelocityTemplateEngine());
 
         get("/callEvents", (req, res) -> {
-//            String text = req.queryParams("tag");
-//            String event = req.queryParams("eventType");
-//
-            String bxml = "";
-//
-//            System.out.println(text);
-//            System.out.println(event);
-//
-//            if(event.equals("answer")){
-                try {
-					String host = "http://" + req.host() + "/callEvents";
-					System.out.println(host);
+            String text = req.queryParams("tag");
+            String event = req.queryParams("eventType");
 
+            String bxml = "";
+
+            System.out.println(text);
+            System.out.println(event);
+
+            if(event.equals("answer")){
+                try {
                     Response response = new Response();
 
-					Call call = new Call(fromNumber, toNumber, host, text);
                     SpeakSentence speakSentence = new SpeakSentence(text, "kate", "female", "en_US");
                     Hangup hangup = new Hangup();
 
-					response.add(call);
                     response.add(speakSentence);
                     response.add(hangup);
                     bxml = response.toXml();
@@ -92,11 +90,15 @@ public class Main {
                     e.printStackTrace();
                 }
                 return bxml;
-//            } else {
-//                res.status(200);
-//                return res;
-//            }
+            } else {
+                res.status(200);
+                return res;
+            }
         });
+
+		post("/callEvents", (req, res) -> {
+			return get("/callEvents", (req, res));
+		});
 
         get("/transfer", (req, res) -> {
 
