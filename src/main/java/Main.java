@@ -145,7 +145,7 @@ public class Main {
 		}
 	}
 
-	public static Call outboundCall(String toNumber, String fromNumber, String callbackURL,
+	public static void outboundCall(String toNumber, String fromNumber, String callbackURL,
 			String text) throws Exception {
 
 		System.out.println("Inside call function");
@@ -154,8 +154,7 @@ public class Main {
 		System.out.println("Message: " + text);
 		Call.create(toNumber, fromNumber, callbackURL, text);
 		System.out.println("Call created");
-
-		return get(callbackURL, null);
+		get(callbackURL, null);
 /*
 		Thread.sleep(20000);
 		
