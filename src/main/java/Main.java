@@ -41,7 +41,7 @@ public class Main {
 			if (req.queryParams("action").equals("call")) {
 				System.out.println("Going to try to make call.");
 				try {
-					get("/callEvents", )
+					get("/callEvents", null);
 //                    String host = "http://" + req.host() + "/callEvents";
 //                    System.out.println(host);
 //					outboundCall(toNumber, fromNumber, host, text);
