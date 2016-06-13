@@ -62,6 +62,11 @@ public class Main {
 			return new ModelAndView(model, layout);
 		}, new VelocityTemplateEngine());
 
+		post("/callEvents", (req, res) -> {
+			get("/callEvents", null);
+			return null;
+		});
+
         get("/callEvents", (req, res) -> {
             String text = req.queryParams("tag");
             String event = req.queryParams("eventType");
@@ -154,7 +159,6 @@ public class Main {
 		System.out.println("Message: " + text);
 		Call.create(toNumber, fromNumber, callbackURL, text);
 		System.out.println("Call created");
-		get(callbackURL, null);
 /*
 		Thread.sleep(20000);
 		
