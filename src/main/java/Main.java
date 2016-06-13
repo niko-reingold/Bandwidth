@@ -1,9 +1,6 @@
 import com.bandwidth.sdk.*;
 import com.bandwidth.sdk.model.Call;
 import com.bandwidth.sdk.model.Message;
-import com.bandwidth.sdk.exception.XMLInvalidAttributeException;
-import com.bandwidth.sdk.exception.XMLInvalidTagContentException;
-import com.bandwidth.sdk.exception.XMLMarshallingException;
 import com.bandwidth.sdk.xml.Response;
 import com.bandwidth.sdk.xml.elements.*;
 
@@ -35,10 +32,6 @@ public class Main {
 		}, new VelocityTemplateEngine());
 
 		get("/phone", (req, res) -> {
-
-
-
-
 			String toNumber = "+1" + req.queryParams("number");
 			String text = req.queryParams("words");
 
@@ -187,23 +180,6 @@ public class Main {
 
 		Call.create(params);
 		System.out.println("Call created");
-/*
-		Thread.sleep(20000);
-		
-		System.out.println("About to speak sentence");
-
-		final Map<String, Object> params = new HashMap<String, Object>();
-		params.put("sentence", text);
-		params.put("voice", "paul");
-		params.put("gender", "male");
-		params.put("locale", "en_US");
-		call.speakSentence(params);
-
-		System.out.println("Sentence Spoken");
-		Thread.sleep(4000);
-
-		call.hangUp();
-*/
 	}
 
 	public static void sendText(String toNumber, String fromNumber, String text) {
