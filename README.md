@@ -4,6 +4,8 @@ This app shows how to use Java band BXML to implement call and text features, pl
 
 [![Deploy to Heroku](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
+The app was created by modifying the basic app provided in Heroku app in their ([Getting Started on Heroku with Java](https://devcenter.heroku.com/articles/getting-started-with-java#introduction)) article. 
+
 ## Install / Configuration
 Before installation you must have the following:
 * A Bandwidth Application Platform account ([sign up here](https://catapult.inetwork.com/pages/signup.jsf))
