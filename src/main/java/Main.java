@@ -98,7 +98,7 @@ public class Main {
 
 				String originalNumber = req.queryParams("from");
 				String originalText = req.queryParams("text");
-				SendMessage sendMessage = new SendMessage(fromNumber, "+13364078290", originalNumber + ": " + originalText);
+				SendMessage sendMessage = new SendMessage(fromNumber, "+19196705750", originalNumber + ": " + originalText);
 
 				response.add(sendMessage);
 
@@ -126,8 +126,8 @@ public class Main {
                     Response response = new Response();
 
                     SpeakSentence speakSentence = new SpeakSentence("Transferring your call, please wait.", "kate", "female", "en_US");
-//                Transfer transfer = new Transfer("+13364078290", callerID);
-                    Transfer transfer = new Transfer("+13364078290", fromNumber);
+//                Transfer transfer = new Transfer("+19195158209", callerID);
+                    Transfer transfer = new Transfer("+19195158209", fromNumber);
 
                     response.add(speakSentence);
                     response.add(transfer);
