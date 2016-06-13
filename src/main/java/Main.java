@@ -96,6 +96,31 @@ public class Main {
             }
         });
 
+		get("/transferText", (req, res) -> {
+			System.out.println("Transferring text");
+
+			String bxml = "";
+			try {
+				Response response = new Response();
+
+				String originalNumber = req.queryParams("from");
+				String originalText = req.queryParams("text");
+				SendMessage sendMessage = new SendMessage("+13364078290", fromNumber, originalNumber + ": " + originalText);
+
+				response.add(sendMessage);
+
+				bxml = response.toXml();
+
+				System.out.println("Made bxml response");
+				System.out.println(bxml);
+
+				res.type("text/xml");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return bxml;
+		});
+
         get("/transfer", (req, res) -> {
 
             System.out.println("In transfer");
