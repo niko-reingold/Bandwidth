@@ -97,7 +97,7 @@ public class Main {
         });
 
 		post("/callEvents", (req, res) -> {
-			return get("/callEvents", (req, res));
+			return get("/callEvents", (req, res);
 		});
 
         get("/transfer", (req, res) -> {
