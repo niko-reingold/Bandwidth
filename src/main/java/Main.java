@@ -96,42 +96,6 @@ public class Main {
             }
         });
 
-		post("/callEvents", (req, res) -> {
-			get("/callEvents", (request, response) -> {
-				String text = req.queryParams("tag");
-				String event = req.queryParams("eventType");
-
-				String bxml = "";
-
-				System.out.println(text);
-				System.out.println(event);
-
-				if(event.equals("answer")){
-					try {
-						Response resp = new Response();
-
-						SpeakSentence speakSentence = new SpeakSentence(text, "kate", "female", "en_US");
-						Hangup hangup = new Hangup();
-
-						resp.add(speakSentence);
-						resp.add(hangup);
-						bxml = resp.toXml();
-
-						System.out.println("Made bxml response");
-						System.out.println(bxml);
-
-						res.type("text/xml");
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-					return bxml;
-				} else {
-					res.status(200);
-					return res;
-				}
-			});
-		});
-
         get("/transfer", (req, res) -> {
 
             System.out.println("In transfer");
@@ -188,7 +152,15 @@ public class Main {
 		System.out.println("toNumber: " + toNumber);
 		System.out.println("fromNumber: " + fromNumber);
 		System.out.println("Message: " + text);
-		Call.create(toNumber, fromNumber, callbackURL, text);
+
+		final Map<String, Object> params = new HashMap<String, Object>();
+		params.put("to", toNumber);
+		params.put("from", fromNumber);
+		params.put("callbackUrl", callbackURL);
+		params.put("tag", text);
+		params.put("callbackHttpMethod", "GET");
+
+		Call.create(params);
 		System.out.println("Call created");
 /*
 		Thread.sleep(20000);
