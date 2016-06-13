@@ -16,43 +16,43 @@ import static spark.Spark.*;
 
 public class Main {
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
 
-		port(getHerokuAssignedPort());
+        port(getHerokuAssignedPort());
 
-		authenticate();
-		String fromNumber = System.getenv().get("PHONE_NUMBER");
+        authenticate();
+        String fromNumber = System.getenv().get("PHONE_NUMBER");
 
-		staticFileLocation("/public");
-		String layout = "templates/layout.ftl";
+        staticFileLocation("/public");
+        String layout = "templates/layout.ftl";
 
-		get("/", (req, res) -> {
-			HashMap model = new HashMap();
-			model.put("template", "templates/phone.ftl");
-			model.put("fromNumber", fromNumber);
-			return new ModelAndView(model, layout);
-		}, new VelocityTemplateEngine());
+        get("/", (req, res) -> {
+            HashMap model = new HashMap();
+            model.put("template", "templates/phone.ftl");
+            model.put("fromNumber", fromNumber);
+            return new ModelAndView(model, layout);
+        }, new VelocityTemplateEngine());
 
-		get("/phone", (req, res) -> {
-			String toNumber = "+1" + req.queryParams("number");
-			String text = req.queryParams("words");
+        get("/phone", (req, res) -> {
+            String toNumber = "+1" + req.queryParams("number");
+            String text = req.queryParams("words");
 
-			if (req.queryParams("action").equals("call")) {
-				try {
+            if (req.queryParams("action").equals("call")) {
+                try {
                     String host = "http://" + req.host() + "/callEvents";
-					outboundCall(toNumber, fromNumber, host, text);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			} else {
-				sendText(toNumber, fromNumber, text);
-			}
-			
-			HashMap model = new HashMap();
-			model.put("template", "templates/phone.ftl");
-			model.put("fromNumber", fromNumber);
-			return new ModelAndView(model, layout);
-		}, new VelocityTemplateEngine());
+                    outboundCall(toNumber, fromNumber, host, text);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                sendText(toNumber, fromNumber, text);
+            }
+
+            HashMap model = new HashMap();
+            model.put("template", "templates/phone.ftl");
+            model.put("fromNumber", fromNumber);
+            return new ModelAndView(model, layout);
+        }, new VelocityTemplateEngine());
 
         get("/callEvents", (req, res) -> {
             String text = req.queryParams("tag");
@@ -60,7 +60,7 @@ public class Main {
 
             String bxml = "";
 
-            if(event.equals("answer")){
+            if (event.equals("answer")) {
                 try {
                     Response response = new Response();
 
@@ -73,9 +73,9 @@ public class Main {
 
                     res.type("text/xml");
                 } catch (XMLMarshallingException e) {
-					System.out.println(bxml);
-					System.out.println(e);
-				}
+                    System.out.println(bxml);
+                    System.out.println(e);
+                }
                 return bxml;
             } else {
                 res.status(200);
@@ -83,33 +83,33 @@ public class Main {
             }
         });
 
-		get("/transferText", (req, res) -> {
+        get("/transferText", (req, res) -> {
 
-			String bxml = "";
-			try {
-				Response response = new Response();
+            String bxml = "";
+            try {
+                Response response = new Response();
 
-				String originalNumber = req.queryParams("from");
-				String originalText = req.queryParams("text");
-				SendMessage sendMessage = new SendMessage(fromNumber, "+19196705750", originalNumber + ": " + originalText);
+                String originalNumber = req.queryParams("from");
+                String originalText = req.queryParams("text");
+                SendMessage sendMessage = new SendMessage(fromNumber, "+19196705750", originalNumber + ": " + originalText);
 
-				response.add(sendMessage);
+                response.add(sendMessage);
 
-				bxml = response.toXml();
+                bxml = response.toXml();
 
-				res.type("text/xml");
-			} catch (XMLMarshallingException e) {
-				System.out.println(bxml);
-				System.out.println(e);
-			}
-			return bxml;
-		});
+                res.type("text/xml");
+            } catch (XMLMarshallingException e) {
+                System.out.println(bxml);
+                System.out.println(e);
+            }
+            return bxml;
+        });
 
         get("/transfer", (req, res) -> {
 
             String bxml = "";
             //           String callerID = req.queryParams("callId");
-            if(req.queryParams("eventType").equals("answer")){
+            if (req.queryParams("eventType").equals("answer")) {
                 try {
                     Response response = new Response();
 
@@ -124,9 +124,9 @@ public class Main {
 
                     res.type("text/xml");
                 } catch (XMLMarshallingException e) {
-					System.out.println(bxml);
-					System.out.println(e);
-				}
+                    System.out.println(bxml);
+                    System.out.println(e);
+                }
                 return bxml;
             } else {
                 res.status(200);
@@ -134,49 +134,49 @@ public class Main {
             }
         });
 
-	}
+    }
 
-	public static void authenticate() {
-		String userId = System.getenv().get("BANDWIDTH_USER_ID");
-		String apiToken = System.getenv().get("BANDWIDTH_API_TOKEN");
-		String apiSecret = System.getenv().get("BANDWIDTH_API_SECRET");
+    public static void authenticate() {
+        String userId = System.getenv().get("BANDWIDTH_USER_ID");
+        String apiToken = System.getenv().get("BANDWIDTH_API_TOKEN");
+        String apiSecret = System.getenv().get("BANDWIDTH_API_SECRET");
 
-		try {
-			BandwidthClient.getInstance().setCredentials(userId, apiToken,
-					apiSecret);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+        try {
+            BandwidthClient.getInstance().setCredentials(userId, apiToken,
+                    apiSecret);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-	public static void outboundCall(String toNumber, String fromNumber, String callbackURL,
-			String text) throws Exception {
+    public static void outboundCall(String toNumber, String fromNumber, String callbackURL,
+                                    String text) throws Exception {
 
-		final Map<String, Object> params = new HashMap<String, Object>();
-		params.put("to", toNumber);
-		params.put("from", fromNumber);
-		params.put("callbackUrl", callbackURL);
-		params.put("tag", text);
-		params.put("callbackHttpMethod", "GET");
+        final Map<String, Object> params = new HashMap<String, Object>();
+        params.put("to", toNumber);
+        params.put("from", fromNumber);
+        params.put("callbackUrl", callbackURL);
+        params.put("tag", text);
+        params.put("callbackHttpMethod", "GET");
 
-		Call.create(params);
-	}
+        Call.create(params);
+    }
 
-	public static void sendText(String toNumber, String fromNumber, String text) {
-		try {
-			Message message = Message.create(toNumber, fromNumber, text);
-			System.out.println("Sent Message");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+    public static void sendText(String toNumber, String fromNumber, String text) {
+        try {
+            Message message = Message.create(toNumber, fromNumber, text);
+            System.out.println("Sent Message");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-	private static int getHerokuAssignedPort() {
-		ProcessBuilder processBuilder = new ProcessBuilder();
-		if (processBuilder.environment().get("PORT") != null) {
-			return Integer.parseInt(processBuilder.environment().get("PORT"));
-		}
-		return 4567;
-	}
+    private static int getHerokuAssignedPort() {
+        ProcessBuilder processBuilder = new ProcessBuilder();
+        if (processBuilder.environment().get("PORT") != null) {
+            return Integer.parseInt(processBuilder.environment().get("PORT"));
+        }
+        return 4567;
+    }
 
 }
