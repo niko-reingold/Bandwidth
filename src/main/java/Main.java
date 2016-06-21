@@ -126,7 +126,7 @@ public class Main {
 
                     SpeakSentence speakSentence = new SpeakSentence("Press 1 to leave a voicemail.  Press 2 to be transferred.", "kate", "female", "en_US");
                     Gather gather = new Gather();
-                    gather.setRequestUrl("https://" + req.host() + "/transfer");
+                    gather.setRequestUrl("http://requestb.in/1dakxem1");
                     gather.setMaxDigits(1);
                     gather.setSpeakSentence(speakSentence);
 
@@ -174,6 +174,8 @@ public class Main {
             } else {
                 try {
                     Response response = new Response();
+
+                    SpeakSentence speakSentence = new SpeakSentence("Transferring your call, please wait.", "kate", "female", "en_US");
 
                     Record record = new Record();
                     record.setTranscribe(true);
