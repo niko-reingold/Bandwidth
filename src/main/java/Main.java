@@ -20,8 +20,6 @@ public class Main {
 
         authenticate();
         String fromNumber = "+19196705750"; //System.getenv().get("PHONE_NUMBER");
-        String[] voicemails = new String[5];
-        int vmCounter = 0;
 
         staticFileLocation("/public");
         String layout = "templates/layout.ftl";
@@ -178,7 +176,7 @@ public class Main {
                     SpeakSentence speakSentence = new SpeakSentence("Please leave a message.", "kate", "female", "en_US");
 
                     Record record = new Record();
-                    record.setRequestUrl("http://requestb.in/1dakxem1");
+                    record.setMaxDuration(60);
                     record.setTranscribe(true);
                     record.setTranscribeCallbackUrl("http://requestb.in/1dakxem1");
 
@@ -200,8 +198,10 @@ public class Main {
 
 //        get("/transcriptions", (req, res) -> {
 //            if(req.queryParams("state").equals("complete")){
+//                String[] voicemails = new String[5];
+//                int vmCounter = 0;
 //                voicemails[vmCounter%5] = get(req.queryParams("textUrl"), (request, response) -> {
-//
+//                vmCounter++;
 //                });
 //            }
 //            HashMap model = new HashMap();
@@ -209,7 +209,7 @@ public class Main {
 //            model.put("fromNumber", fromNumber);
 //            return new ModelAndView(model, layout);
 //        }, new VelocityTemplateEngine());
-//
+
     }
 
     public static void authenticate() {
