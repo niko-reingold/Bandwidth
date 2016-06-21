@@ -171,18 +171,19 @@ public class Main {
                 }
             } else {
                 try {
+                    System.out.println("In record try");
                     Response response = new Response();
 
                     SpeakSentence speakSentence = new SpeakSentence("Please leave a message.", "kate", "female", "en_US");
-
+                    System.out.println("Created speak sentence");
                     Record record = new Record();
                     record.setMaxDuration(60);
                     record.setTranscribe(true);
                     record.setTranscribeCallbackUrl("http://requestb.in/1dakxem1");
-
+                    System.out.println("Created record");
                     response.add(speakSentence);
                     response.add(record);
-
+                    System.out.println("Created response");
                     bxml = response.toXml();
                     System.out.println(bxml);
                 } catch (Exception e) {
