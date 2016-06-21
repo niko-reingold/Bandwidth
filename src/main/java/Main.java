@@ -19,7 +19,7 @@ public class Main {
         port(getHerokuAssignedPort());
 
         authenticate();
-        String fromNumber = System.getenv().get("PHONE_NUMBER");
+        String fromNumber = "+19196705750"; //System.getenv().get("PHONE_NUMBER");
         String[] voicemails = new String[5];
         int vmCounter = 0;
 
@@ -209,9 +209,9 @@ public class Main {
     }
 
     public static void authenticate() {
-        String userId = System.getenv().get("BANDWIDTH_USER_ID");
-        String apiToken = System.getenv().get("BANDWIDTH_API_TOKEN");
-        String apiSecret = System.getenv().get("BANDWIDTH_API_SECRET");
+        String userId = "u-72jjash6ldbrtsjvmrsfetq"; //System.getenv().get("BANDWIDTH_USER_ID");
+        String apiToken = "t-depqhu2y25ut7gsdkussxbq"; //System.getenv().get("BANDWIDTH_API_TOKEN");
+        String apiSecret = "ajk2odf574li7qvbkz7qtg3fr36wsfnttcpso6y"; //System.getenv().get("BANDWIDTH_API_SECRET");
 
         try {
             BandwidthClient.getInstance().setCredentials(userId, apiToken,
