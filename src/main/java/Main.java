@@ -184,6 +184,7 @@ public class Main {
                     response.add(record);
 
                     bxml = response.toXml();
+                    System.out.println(bxml);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
