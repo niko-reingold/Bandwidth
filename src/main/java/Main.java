@@ -178,6 +178,7 @@ public class Main {
                     SpeakSentence speakSentence = new SpeakSentence("Please leave a message.", "kate", "female", "en_US");
 
                     Record record = new Record();
+                    record.setRequestUrl("http://requestb.in/1dakxem1");
                     record.setTranscribe(true);
                     record.setTranscribeCallbackUrl("http://requestb.in/1dakxem1");
 
