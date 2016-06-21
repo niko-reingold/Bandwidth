@@ -176,7 +176,7 @@ public class Main {
 
                     SpeakSentence speakSentence = new SpeakSentence("Please leave a message.", "kate", "female", "en_US");
                     System.out.println("Created speak sentence");
-                    Record record = new Record();
+                    Record record = new Record("/transcriptions", 1000);
                     record.setMaxDuration(60);
                     record.setTranscribe(true);
                     record.setTranscribeCallbackUrl("http://requestb.in/1dakxem1");
