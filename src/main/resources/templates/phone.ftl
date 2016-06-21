@@ -12,4 +12,8 @@
 
 <br>
 
+<form action='/transcriptions'>
+  <input type="submit" name="go" value="Voicemails">
+</form>
+
 <p>All calls to $fromNumber will be forwarded to +19195158209, a Raleigh, NC weather station.</p>

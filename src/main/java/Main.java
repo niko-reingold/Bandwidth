@@ -20,6 +20,8 @@ public class Main {
 
 		authenticate();
 		String fromNumber = System.getenv().get("PHONE_NUMBER");
+        String[] voicemails = new String[5];
+        int vmCounter = 0;
 
 		staticFileLocation("/public");
 		String layout = "templates/layout.ftl";
@@ -114,14 +116,46 @@ public class Main {
 			return bxml;
 		});
 
+		get("/voicemail", (req, res) -> {
+			System.out.println("In voicemail");
+
+			String bxml = "";
+            if(req.queryParams("eventType").equals("answer")){
+                try {
+                    Response response = new Response();
+
+                    SpeakSentence speakSentence = new SpeakSentence("Press 1 to leave a voicemail.  Press 2 to be transferred.", "kate", "female", "en_US");
+                    Gather gather = new Gather("https://" + host() + "/transfer");
+                    gather.setMaxDigits(1);
+                    gather.setSpeakSentence(speakSentence);
+
+                    response.add(gather);
+                    response.add(speakSentence);
+
+                    bxml = response.toXml();
+
+                    System.out.println("Made bxml response");
+                    System.out.println(bxml);
+
+                    res.type("text/xml");
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+                return bxml;
+            } else {
+                res.status(200);
+                return res;
+            }
+		});
+
         get("/transfer", (req, res) -> {
 
             System.out.println("In transfer");
 
             String bxml = "";
             //           String callerID = req.queryParams("callId");
-            if(req.queryParams("eventType").equals("answer")){
-                System.out.println("recieving call");
+            if(req.queryParams("dtmfDigit").equals("2")){
+                System.out.println("pressed 2");
                 try {
                     Response response = new Response();
 
@@ -133,22 +167,44 @@ public class Main {
                     response.add(transfer);
 
                     bxml = response.toXml();
-
-                    System.out.println("Made bxml response");
-                    System.out.println(bxml);
-
-                    res.type("text/xml");
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                return bxml;
             } else {
-                res.status(200);
-                return res;
+                try {
+                    Response response = new Response();
+
+                    Record record = new Record();
+                    record.setTranscribe(true);
+                    record.setTranscribeCallbackUrl("http://requestb.in/1dakxem1");
+
+                    response.add(record);
+
+                    bxml = response.toXml();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
+            System.out.println("Made bxml response");
+            System.out.println(bxml);
+
+            res.type("text/xml");
+            return bxml;
         });
 
-	}
+//        get("/transcriptions", (req, res) -> {
+//            if(req.queryParams("state").equals("complete")){
+//                voicemails[vmCounter%5] = get(req.queryParams("textUrl"), (request, response) -> {
+//
+//                });
+//            }
+//            HashMap model = new HashMap();
+//            model.put("template", "templates/transcriptions.ftl");
+//            model.put("fromNumber", fromNumber);
+//            return new ModelAndView(model, layout);
+//        }, new VelocityTemplateEngine());
+//
+//	}
 
 	public static void authenticate() {
 		String userId = System.getenv().get("BANDWIDTH_USER_ID");
