@@ -174,8 +174,9 @@ public class Main {
             } else {
                 try {
                     System.out.println("In record try");
-                    Response response = new Response();
 
+                    Response response = new Response();
+                    System.out.println("Created response");
                     SpeakSentence speakSentence = new SpeakSentence("Please leave a message.", "kate", "female", "en_US");
                     System.out.println("Created speak sentence");
                     Record record = new Record("http://requestb.in/1dakxem1", 1000);
