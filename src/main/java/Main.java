@@ -127,6 +127,7 @@ public class Main {
                     gather.setRequestUrl("http://" + req.host() + "/transfer");
                     gather.setMaxDigits(1);
                     gather.setSpeakSentence(speakSentence);
+                    System.out.println("made gather");
 
                     response.add(gather);
                     response.add(speakSentence);
@@ -140,6 +141,7 @@ public class Main {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                System.out.println("Going to transfer");
                 return bxml;
             } else {
                 res.status(200);
