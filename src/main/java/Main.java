@@ -125,7 +125,8 @@ public class Main {
                     Response response = new Response();
 
                     SpeakSentence speakSentence = new SpeakSentence("Press 1 to leave a voicemail.  Press 2 to be transferred.", "kate", "female", "en_US");
-                    Gather gather = new Gather("https://" + host() + "/transfer");
+                    Gather gather = new Gather();
+                    gather.setRequestUrl("https://" + req.host() + "/transfer");
                     gather.setMaxDigits(1);
                     gather.setSpeakSentence(speakSentence);
 
@@ -148,7 +149,7 @@ public class Main {
             }
 		});
 
-        get("/transfer", (req, res) -> {
+        get("/voicemail/transfer", (req, res) -> {
 
             System.out.println("In transfer");
 
@@ -192,6 +193,7 @@ public class Main {
             return bxml;
         });
 
+
 //        get("/transcriptions", (req, res) -> {
 //            if(req.queryParams("state").equals("complete")){
 //                voicemails[vmCounter%5] = get(req.queryParams("textUrl"), (request, response) -> {
@@ -204,7 +206,7 @@ public class Main {
 //            return new ModelAndView(model, layout);
 //        }, new VelocityTemplateEngine());
 //
-//	}
+	}
 
 	public static void authenticate() {
 		String userId = System.getenv().get("BANDWIDTH_USER_ID");
