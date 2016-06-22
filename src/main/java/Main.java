@@ -153,47 +153,48 @@ public class Main {
 
             System.out.println("In transfer");
             System.out.println(req.queryParams());
-            System.out.println(req.queryParams("cause"));
             System.out.println(req.queryParams("eventType"));
             String bxml = "";
             //           String callerID = req.queryParams("callId");
-            if (req.queryParams("digits").equals("2")) {
-                System.out.println("pressed 2");
-                try {
-                    Response response = new Response();
+            if (req.queryParams("eventType").equals("gather")) {
+                if (req.queryParams("digits").equals("2")) {
+                    System.out.println("pressed 2");
+                    try {
+                        Response response = new Response();
 
-                    SpeakSentence speakSentence = new SpeakSentence("Transferring your call, please wait.", "kate", "female", "en_US");
-//                Transfer transfer = new Transfer("+19195158209", callerID);
-                    Transfer transfer = new Transfer("+19195158209", fromNumber);
+                        SpeakSentence speakSentence = new SpeakSentence("Transferring your call, please wait.", "kate", "female", "en_US");
+                        //                Transfer transfer = new Transfer("+19195158209", callerID);
+                        Transfer transfer = new Transfer("+19195158209", fromNumber);
 
-                    response.add(speakSentence);
-                    response.add(transfer);
+                        response.add(speakSentence);
+                        response.add(transfer);
 
-                    bxml = response.toXml();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } else {
-                try {
-                    System.out.println("In record try");
+                        bxml = response.toXml();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    try {
+                        System.out.println("In record try");
 
-                    Response response = new Response();
-                    System.out.println("Created response");
-                    SpeakSentence speakSentence = new SpeakSentence("Please leave a message.", "kate", "female", "en_US");
-                    System.out.println("Created speak sentence");
-                    Record record = new Record("http://requestb.in/1dakxem1", 1000);
-                    System.out.println(record.getRequestUrl());
-                    record.setMaxDuration(60);
-                    record.setTranscribe(true);
-                    record.setTranscribeCallbackUrl("http://requestb.in/1dakxem1");
-                    System.out.println(record.getTranscribeCallbackUrl());
-                    response.add(speakSentence);
-                    response.add(record);
-                    System.out.println("Created response");
-                    bxml = response.toXml();
-                    System.out.println(bxml);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                        Response response = new Response();
+                        System.out.println("Created response");
+                        SpeakSentence speakSentence = new SpeakSentence("Please leave a message.", "kate", "female", "en_US");
+                        System.out.println("Created speak sentence");
+                        Record record = new Record("http://requestb.in/1dakxem1", 1000);
+                        System.out.println(record.getRequestUrl());
+                        record.setMaxDuration(60);
+                        record.setTranscribe(true);
+                        record.setTranscribeCallbackUrl("http://requestb.in/1dakxem1");
+                        System.out.println(record.getTranscribeCallbackUrl());
+                        response.add(speakSentence);
+                        response.add(record);
+                        System.out.println("Created response");
+                        bxml = response.toXml();
+                        System.out.println(bxml);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
             System.out.println("Made bxml response");
