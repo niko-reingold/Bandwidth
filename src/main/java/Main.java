@@ -154,7 +154,7 @@ public class Main {
             System.out.println("In transfer");
             System.out.println(req.queryParams());
             System.out.println(req.queryParams("eventType"));
-            if(!req.queryParams("eventType").equals("gather")){
+            if(req.queryParams("eventType").equals("hangup")){
                 return null;
             }
             String bxml = "";
