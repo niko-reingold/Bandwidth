@@ -122,7 +122,7 @@ public class Main {
                 try {
                     Response response = new Response();
 
-                    SpeakSentence speakSentence = new SpeakSentence("Press 1 to leave a voicemail.  Press 2 to be transferred.", "kate", "female", "en_US");
+                    SpeakSentence speakSentence = new SpeakSentence("Press 1 to leave a voicemail. Press 2 to be transferred.", "kate", "female", "en_US");
                     Gather gather = new Gather();
                     gather.setRequestUrl("http://" + req.host() + "/transfer");
                     gather.setMaxDigits(1);
@@ -180,10 +180,11 @@ public class Main {
                     SpeakSentence speakSentence = new SpeakSentence("Please leave a message.", "kate", "female", "en_US");
                     System.out.println("Created speak sentence");
                     Record record = new Record("http://requestb.in/1dakxem1", 1000);
+                    System.out.println(record.getRequestUrl());
                     record.setMaxDuration(60);
                     record.setTranscribe(true);
                     record.setTranscribeCallbackUrl("http://requestb.in/1dakxem1");
-                    System.out.println("Created record");
+                    System.out.println(record.getTranscribeCallbackUrl());
                     response.add(speakSentence);
                     response.add(record);
                     System.out.println("Created response");
