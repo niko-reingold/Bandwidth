@@ -127,7 +127,7 @@ public class Main {
                     gather.setRequestUrl("http://" + req.host() + "/transfer");
                     gather.setMaxDigits(1);
                     gather.setSpeakSentence(speakSentence);
-                    System.out.println("made gather");
+                    System.out.println(gather.getRequestUrl());
 
                     response.add(gather);
                     response.add(speakSentence);
@@ -152,7 +152,7 @@ public class Main {
         get("/transfer", (req, res) -> {
 
             System.out.println("In transfer");
-
+            System.out.println(req.queryParams());
             String bxml = "";
             //           String callerID = req.queryParams("callId");
             if (req.queryParams("digits").equals("2")) {
