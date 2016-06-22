@@ -156,10 +156,9 @@ public class Main {
             System.out.println(req.queryParams("eventType"));
             String bxml = "";
             //           String callerID = req.queryParams("callId");
-            if (req.queryParams("eventType").equals("gather")) {
+            try{
                 if (req.queryParams("digits").equals("2")) {
                     System.out.println("pressed 2");
-                    try {
                         Response response = new Response();
 
                         SpeakSentence speakSentence = new SpeakSentence("Transferring your call, please wait.", "kate", "female", "en_US");
@@ -170,11 +169,7 @@ public class Main {
                         response.add(transfer);
 
                         bxml = response.toXml();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
                 } else {
-                    try {
                         System.out.println("In record try");
 
                         Response response = new Response();
@@ -192,10 +187,9 @@ public class Main {
                         System.out.println("Created response");
                         bxml = response.toXml();
                         System.out.println(bxml);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
             System.out.println("Made bxml response");
             System.out.println(bxml);
