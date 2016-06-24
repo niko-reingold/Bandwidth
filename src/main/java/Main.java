@@ -219,7 +219,7 @@ public class Main {
     public static void authenticate() {
         String userId = System.getenv().get("BANDWIDTH_USER_ID");
         String apiToken = System.getenv().get("BANDWIDTH_API_TOKEN");
-        String apiSecret = System.getenv().get("BANDWIDTH_API_TOKEN");
+        String apiSecret = System.getenv().get("BANDWIDTH_API_SECRET");
 
         try {
             BandwidthClient.getInstance().setCredentials(userId, apiToken,
