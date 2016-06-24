@@ -201,7 +201,7 @@ public class Main {
                 String mediaUrl = "https://api.catapult.inetwork.com/v1/users/" + System.getenv().get("BANDWIDTH_USER_ID") + "/media/" + req.queryParams("callId") + "-1.wav";
                 String transUrl = req.queryParams("recordingUri") + "/transcriptions";
                 try {
-                    HttpResponse<JsonNode> response = Unirest.get(transUrl).basicAuth(System.getenv().get("BANDWIDTH_API_TOKEN"), System.getenv().get("BANDWIDTH_API_TOKEN")).asJson();
+                    HttpResponse<JsonNode> response = Unirest.get(transUrl).basicAuth(System.getenv().get("BANDWIDTH_API_TOKEN"), System.getenv().get("BANDWIDTH_API_SECRET")).asJson();
                     JsonNode transcription = response.getBody();
                     String trans = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new java.util.Date()) + " - " + transcription.toString();
                     transcriptions[transCounter % 5] = trans;
