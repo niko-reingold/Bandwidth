@@ -5,8 +5,13 @@ import com.bandwidth.sdk.xml.Response;
 import com.bandwidth.sdk.xml.elements.*;
 
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Map;
+import java.text.SimpleDateFormat;
 
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.Unirest;
 import spark.ModelAndView;
 import spark.template.velocity.VelocityTemplateEngine;
 
@@ -14,12 +19,16 @@ import static spark.Spark.*;
 
 public class Main {
 
+    public static String[] transcriptions = {"", "", "", "", ""};
+    public static String[] mediaLinks = {"/messages", "/messages", "/messages", "/messages", "/messages"};
+    public static int transCounter = 0;
+
     public static void main(String[] args) {
 
         port(getHerokuAssignedPort());
 
         authenticate();
-        String fromNumber = "+19196705750"; //System.getenv().get("PHONE_NUMBER");
+        String fromNumber = System.getenv().get("PHONE_NUMBER");
 
         staticFileLocation("/public");
         String layout = "templates/layout.ftl";
@@ -36,16 +45,13 @@ public class Main {
             String text = req.queryParams("words");
 
             if (req.queryParams("action").equals("call")) {
-                System.out.println("Going to try to make call.");
                 try {
                     String host = "http://" + req.host() + "/callEvents";
-                    System.out.println(host);
                     outboundCall(toNumber, fromNumber, host, text);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             } else {
-                System.out.println("Going to try to send text.");
                 sendText(toNumber, fromNumber, text);
             }
 
@@ -55,14 +61,19 @@ public class Main {
             return new ModelAndView(model, layout);
         }, new VelocityTemplateEngine());
 
+        get("/messages", (req,res) -> {
+            HashMap model = new HashMap();
+            model.put("template", "templates/transcriptions.ftl");
+            model.put("transcriptions", transcriptions);
+            model.put("mediaLinks", mediaLinks);
+            return new ModelAndView(model, layout);
+        }, new VelocityTemplateEngine());
+
         get("/callEvents", (req, res) -> {
             String text = req.queryParams("tag");
             String event = req.queryParams("eventType");
 
             String bxml = "";
-
-            System.out.println(text);
-            System.out.println(event);
 
             if (event.equals("answer")) {
                 try {
@@ -74,9 +85,6 @@ public class Main {
                     response.add(speakSentence);
                     response.add(hangup);
                     bxml = response.toXml();
-
-                    System.out.println("Made bxml response");
-                    System.out.println(bxml);
 
                     res.type("text/xml");
                 } catch (Exception e) {
@@ -104,9 +112,6 @@ public class Main {
 
                 bxml = response.toXml();
 
-                System.out.println("Made bxml response");
-                System.out.println(bxml);
-
                 res.type("text/xml");
             } catch (Exception e) {
                 e.printStackTrace();
@@ -127,15 +132,11 @@ public class Main {
                     gather.setRequestUrl("http://" + req.host() + "/transfer");
                     gather.setMaxDigits(1);
                     gather.setSpeakSentence(speakSentence);
-                    System.out.println(gather.getRequestUrl());
 
                     response.add(gather);
                     response.add(speakSentence);
 
                     bxml = response.toXml();
-
-                    System.out.println("Made bxml response");
-                    System.out.println(bxml);
 
                     res.type("text/xml");
                 } catch (Exception e) {
@@ -154,74 +155,71 @@ public class Main {
             System.out.println("In transfer");
             System.out.println(req.queryParams());
             System.out.println(req.queryParams("eventType"));
-            if(req.queryParams("eventType").equals("hangup")){
-                return null;
+            if(!req.queryParams("eventType").equals("gather")){  //If not a gather eventType then we end
+                res.status(200);                                 //hanging up triggers the /transfer to be called a 2nd time
+                return res;
             }
             String bxml = "";
             //           String callerID = req.queryParams("callId");
             try{
                 if (req.queryParams("digits").equals("2")) {
                     System.out.println("pressed 2");
-                        Response response = new Response();
+                    Response response = new Response();
 
-                        SpeakSentence speakSentence = new SpeakSentence("Transferring your call, please wait.", "kate", "female", "en_US");
-                        //                Transfer transfer = new Transfer("+19195158209", callerID);
-                        Transfer transfer = new Transfer("+19195158209", fromNumber);
+                    SpeakSentence speakSentence = new SpeakSentence("Transferring your call, please wait.", "kate", "female", "en_US");
+                    //                Transfer transfer = new Transfer("+19195158209", callerID);
+                    Transfer transfer = new Transfer("+19195158209", fromNumber);
 
-                        response.add(speakSentence);
-                        response.add(transfer);
+                    response.add(speakSentence);
+                    response.add(transfer);
 
-                        bxml = response.toXml();
+                    bxml = response.toXml();
                 } else {
-                        System.out.println("In record try");
+                    System.out.println("In record try");
 
-                        Response response = new Response();
-                        System.out.println("Created response");
-                        SpeakSentence speakSentence = new SpeakSentence("Please leave a message.", "kate", "female", "en_US");
-                        System.out.println("Created speak sentence");
-                        Record record = new Record("http://requestb.in/1dakxem1", 1000);
-                        System.out.println(record.getRequestUrl());
-                        record.setMaxDuration(60);
-                        record.setTranscribe(true);
-                        record.setTranscribeCallbackUrl("http://requestb.in/1dakxem1");
-                        System.out.println(record.getTranscribeCallbackUrl());
-                        response.add(speakSentence);
-                        response.add(record);
-                        System.out.println("Created response");
-                        bxml = response.toXml();
-                        System.out.println(bxml);
+                    Response response = new Response();
+                    SpeakSentence speakSentence = new SpeakSentence("Please leave a message.", "kate", "female", "en_US");
+                    Record record = new Record("http://" + req.host() + "/transcriptions", 1000);
+                    record.setMaxDuration(300);
+                    record.setTranscribe(true);
+                    record.setTranscribeCallbackUrl("http://" + req.host() + "/transcriptions");
+                    response.add(speakSentence);
+                    response.add(record);
+                    bxml = response.toXml();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            System.out.println("Made bxml response");
-            System.out.println(bxml);
 
             res.type("text/xml");
             return bxml;
         });
 
 
-//        get("/transcriptions", (req, res) -> {
-//            if(req.queryParams("state").equals("complete")){
-//                String[] voicemails = new String[5];
-//                int vmCounter = 0;
-//                voicemails[vmCounter%5] = get(req.queryParams("textUrl"), (request, response) -> {
-//                vmCounter++;
-//                });
-//            }
-//            HashMap model = new HashMap();
-//            model.put("template", "templates/transcriptions.ftl");
-//            model.put("fromNumber", fromNumber);
-//            return new ModelAndView(model, layout);
-//        }, new VelocityTemplateEngine());
+        get("/transcriptions", (req, res) -> {
+            if (req.queryParams("state").equals("complete")) {
+                String mediaUrl = "https://api.catapult.inetwork.com/v1/users/" + System.getenv().get("BANDWIDTH_USER_ID") + "/media/" + req.queryParams("callId") + "-1.wav";
+                String transUrl = req.queryParams("recordingUri") + "/transcriptions";
+                try {
+                    HttpResponse<JsonNode> response = Unirest.get(transUrl).basicAuth(System.getenv().get("BANDWIDTH_API_TOKEN"), System.getenv().get("BANDWIDTH_API_TOKEN")).asJson();
+                    JsonNode transcription = response.getBody();
+                    String trans = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new java.util.Date()) + " - " + transcription.toString();
+                    transcriptions[transCounter % 5] = trans;
+                    mediaLinks[transCounter % 5] = mediaUrl;
+                    transCounter++;
+                } catch (com.mashape.unirest.http.exceptions.UnirestException e) {
+                    System.out.println(e);
+                }
+            }
+            return null;
+        });
 
     }
 
     public static void authenticate() {
-        String userId = "u-72jjash6ldbrtsjvmrsfetq"; //System.getenv().get("BANDWIDTH_USER_ID");
-        String apiToken = "t-depqhu2y25ut7gsdkussxbq"; //System.getenv().get("BANDWIDTH_API_TOKEN");
-        String apiSecret = "ajk2odf574li7qvbkz7qtg3fr36wsfnttcpso6y"; //System.getenv().get("BANDWIDTH_API_SECRET");
+        String userId = System.getenv().get("BANDWIDTH_USER_ID");
+        String apiToken = System.getenv().get("BANDWIDTH_API_TOKEN");
+        String apiSecret = System.getenv().get("BANDWIDTH_API_TOKEN");
 
         try {
             BandwidthClient.getInstance().setCredentials(userId, apiToken,
@@ -234,11 +232,6 @@ public class Main {
     public static void outboundCall(String toNumber, String fromNumber, String callbackURL,
                                     String text) throws Exception {
 
-        System.out.println("Inside call function");
-        System.out.println("toNumber: " + toNumber);
-        System.out.println("fromNumber: " + fromNumber);
-        System.out.println("Message: " + text);
-
         final Map<String, Object> params = new HashMap<String, Object>();
         params.put("to", toNumber);
         params.put("from", fromNumber);
@@ -247,17 +240,11 @@ public class Main {
         params.put("callbackHttpMethod", "GET");
 
         Call.create(params);
-        System.out.println("Call created");
     }
 
     public static void sendText(String toNumber, String fromNumber, String text) {
-        System.out.println("Inside text function");
-        System.out.println("toNumber: " + toNumber);
-        System.out.println("fromNumber: " + fromNumber);
-        System.out.println("Message: " + text);
         try {
-            Message message = Message.create(toNumber, fromNumber, text);
-            System.out.println("Sent Message");
+            Message.create(toNumber, fromNumber, text);
         } catch (Exception e) {
             e.printStackTrace();
         }
