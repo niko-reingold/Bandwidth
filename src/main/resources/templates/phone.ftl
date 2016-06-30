@@ -1,7 +1,7 @@
 <br><br>
 <form action='/phone'>
   <div>Number: +1
-  <input type="text" placeholer="5555555555" name="number" required="true"></div> <br>
+  <input type="text" placeholder="5555555555" name="number" required="true"></div> <br>
   <div>Text:     
   <input type="text" placeholder="message" name="words" required="true"></div> <br>
 

@@ -162,19 +162,7 @@ public class Main {
             String bxml = "";
             //           String callerID = req.queryParams("callId");
             try {
-                if (req.queryParams("digits").equals("2")) {
-                    System.out.println("pressed 2");
-                    Response response = new Response();
-
-                    SpeakSentence speakSentence = new SpeakSentence("Transferring your call, please wait.", "kate", "female", "en_US");
-                    //                Transfer transfer = new Transfer("+19195158209", callerID);
-                    Transfer transfer = new Transfer("+13364078290", fromNumber);
-
-                    response.add(speakSentence);
-                    response.add(transfer);
-
-                    bxml = response.toXml();
-                } else {
+                if (req.queryParams("digits").equals("1")) {
                     System.out.println("In record try");
 
                     Response response = new Response();
@@ -185,6 +173,19 @@ public class Main {
                     record.setTranscribeCallbackUrl("http://" + req.host() + "/transcriptions");
                     response.add(speakSentence);
                     response.add(record);
+                    bxml = response.toXml();
+                    
+                } else {
+                    System.out.println("pressed 2");
+                    Response response = new Response();
+
+                    SpeakSentence speakSentence = new SpeakSentence("Transferring your call, please wait.", "kate", "female", "en_US");
+                    //                Transfer transfer = new Transfer("+19195158209", callerID);
+                    Transfer transfer = new Transfer("+13364078290", fromNumber);
+
+                    response.add(speakSentence);
+                    response.add(transfer);
+
                     bxml = response.toXml();
                 }
             } catch (Exception e) {
