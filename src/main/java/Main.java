@@ -61,7 +61,7 @@ public class Main {
             return new ModelAndView(model, layout);
         }, new VelocityTemplateEngine());
 
-        get("/messages", (req,res) -> {
+        get("/messages", (req, res) -> {
             HashMap model = new HashMap();
             model.put("template", "templates/transcriptions.ftl");
             model.put("transcriptions", transcriptions);
@@ -155,20 +155,20 @@ public class Main {
             System.out.println("In transfer");
             System.out.println(req.queryParams());
             System.out.println(req.queryParams("eventType"));
-            if(!req.queryParams("eventType").equals("gather")){  //If not a gather eventType then we end
+            if (!req.queryParams("eventType").equals("gather")) {  //If not a gather eventType then we end
                 res.status(200);                                 //hanging up triggers the /transfer to be called a 2nd time
                 return res;
             }
             String bxml = "";
             //           String callerID = req.queryParams("callId");
-            try{
+            try {
                 if (req.queryParams("digits").equals("2")) {
                     System.out.println("pressed 2");
                     Response response = new Response();
 
                     SpeakSentence speakSentence = new SpeakSentence("Transferring your call, please wait.", "kate", "female", "en_US");
                     //                Transfer transfer = new Transfer("+19195158209", callerID);
-                    Transfer transfer = new Transfer("+19195158209", fromNumber);
+                    Transfer transfer = new Transfer("+13364078290", fromNumber);
 
                     response.add(speakSentence);
                     response.add(transfer);
